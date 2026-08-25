@@ -3,299 +3,311 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#5b4b9e">
-<title>Design Approval</title>
+<meta name="theme-color" content="#F2F0EA">
+<title>Design Review</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-  body{display:flex;flex-direction:column;background:linear-gradient(160deg,#667eea,#764ba2);color:#fff;
-       user-select:none;-webkit-user-select:none}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#F2F0EA; --card:#FBFAF8; --ink:#15150F; --mut:#8B897F;
+  --line:#E2DFD5; --lime:#D9F94C; --ok:#2F7D4F; --no:#B4402F; --rev:#B8792A;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  text-transform:uppercase;letter-spacing:.13em;font-size:10.5px;color:var(--mut)}
+.serif{font-family:Georgia,'Times New Roman',serif}
 
-  header{padding:14px 16px calc(14px + env(safe-area-inset-top)) 16px;padding-top:calc(14px + env(safe-area-inset-top));
-         display:flex;align-items:center;gap:12px;background:rgba(0,0,0,.18)}
-  header .t{flex:1;min-width:0}
-  header h1{font-size:17px;font-weight:600;letter-spacing:-.2px}
-  header p{font-size:12px;opacity:.85;margin-top:2px}
-  .icon-btn{width:40px;height:40px;border:none;border-radius:50%;background:rgba(255,255,255,.18);
-            color:#fff;font-size:17px;cursor:pointer;flex:none;transition:transform .15s}
-  .icon-btn:active{transform:scale(.9)}
+/* ---------- chrome ---------- */
+header{display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 18px 14px;
+  border-bottom:1px solid var(--line);background:var(--bg);flex:none}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--lime);
+  border:1.5px solid var(--ink);flex:none}
+header .brand{flex:1;min-width:0}
+.iconbtn{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--card);
+  font-size:15px;cursor:pointer;flex:none;color:var(--ink)}
+.iconbtn:active{transform:scale(.92)}
 
-  main{flex:1;position:relative;display:flex;align-items:center;justify-content:center;padding:16px;min-height:0}
+main{flex:1;position:relative;overflow:hidden;min-height:0}
+.view{position:absolute;inset:0;display:none;flex-direction:column}
+.view.on{display:flex}
 
-  .stack{position:relative;width:100%;max-width:420px;height:100%;max-height:620px}
-  .card{position:absolute;inset:0;background:#fff;border-radius:18px;overflow:hidden;
-        box-shadow:0 12px 40px rgba(0,0,0,.32);display:flex;flex-direction:column;
-        touch-action:pan-y;will-change:transform}
-  .card .img{flex:1;background:#f2f2f4;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-  .card .img img{width:100%;height:100%;object-fit:contain;pointer-events:none}
-  .card .img .ph{position:absolute;color:#bbb;font-size:13px}
-  .meta{padding:12px 14px;color:#222;border-top:1px solid #eee;background:#fff}
-  .meta h2{font-size:15px;font-weight:650;line-height:1.25}
-  .meta .sub{font-size:11px;color:#8a8a90;margin-top:3px}
-  .meta .desc{font-size:12.5px;color:#5a5a62;margin-top:6px;line-height:1.4;
-              display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .acts{display:flex;gap:7px;padding:10px 12px calc(10px + env(safe-area-inset-bottom)) 12px;background:#fff}
-  .acts button{flex:1;padding:12px 6px;border:none;border-radius:10px;font-size:13px;font-weight:650;
-               color:#fff;cursor:pointer;transition:transform .12s}
-  .acts button:active{transform:scale(.94)}
-  .no{background:#ff4757}.mid{background:#ffa502}.yes{background:#2ed573}
+/* ---------- workspace ---------- */
+#home{overflow-y:auto;padding:26px 18px calc(30px + env(safe-area-inset-bottom))}
+.hero{margin-bottom:30px}
+.hero h1{font-size:clamp(34px,10vw,46px);line-height:.98;letter-spacing:-.02em;font-weight:400;margin:12px 0 0}
+.hero h1 em{font-style:italic;display:block}
+.hero p{font-size:14px;color:#5F5D55;margin-top:14px;line-height:1.55;max-width:34ch}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 14px}
+.proj{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.proj .top{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:ui-monospace,Menlo,monospace;
+  font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut)}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--mut);font-style:normal}
+.pill.live i{background:var(--lime);box-shadow:0 0 0 2px rgba(217,249,76,.35)}
+.pill.done i{background:var(--ok)}
+.proj h2{font-size:25px;font-weight:400;letter-spacing:-.015em;line-height:1.1}
+.thumbs{display:flex;gap:6px;margin:14px 0 4px}
+.thumbs div{flex:1;aspect-ratio:9/16;border-radius:7px;overflow:hidden;background:#E8E5DC}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin:14px 0 8px}
+.bar span{display:block;height:100%;background:var(--lime);border-radius:2px;transition:width .4s}
+.proj .foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;
+  padding-top:12px;border-top:1px solid var(--line)}
+.open{background:var(--ink);color:#fff;border:none;border-radius:9px;padding:11px 18px;
+  font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.open:active{transform:scale(.95)}
+.open.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.glance{display:flex;gap:9px;margin-top:22px}
+.stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 12px}
+.stat b{display:block;font-size:26px;font-weight:400;font-family:Georgia,serif;line-height:1}
+.stat span{font-size:10.5px;color:var(--mut);font-family:ui-monospace,Menlo,monospace;
+  text-transform:uppercase;letter-spacing:.09em;margin-top:5px;display:block}
 
-  .badge{position:absolute;top:20px;font-size:26px;font-weight:800;letter-spacing:1px;padding:8px 16px;
-         border:4px solid;border-radius:10px;opacity:0;transition:opacity .1s;pointer-events:none}
-  .badge.y{right:18px;color:#2ed573;border-color:#2ed573;transform:rotate(14deg)}
-  .badge.n{left:18px;color:#ff4757;border-color:#ff4757;transform:rotate(-14deg)}
+/* ---------- review deck ---------- */
+#deck{padding:14px 16px 0}
+.deckhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex:none}
+.deckhead .back{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:7px 11px;font-size:12px;cursor:pointer;color:var(--ink)}
+.deckhead .t{flex:1;min-width:0}
+.deckhead h2{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage{flex:1;position:relative;min-height:0;margin-bottom:10px}
+.card{position:absolute;inset:0;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 8px 28px rgba(20,20,15,.10);touch-action:pan-y;will-change:transform}
+.card .shot{flex:1;min-height:0;background:#EAE7DE;display:flex;align-items:center;justify-content:center;position:relative}
+.card .shot img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
+.card .ph{position:absolute;font-size:11px;color:#A9A79E;font-family:ui-monospace,Menlo,monospace}
+.card .cap{padding:12px 14px;border-top:1px solid var(--line);display:flex;
+  align-items:center;justify-content:space-between;gap:10px;flex:none}
+.card .cap h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.stamp{position:absolute;top:18px;font-family:ui-monospace,Menlo,monospace;font-size:15px;
+  font-weight:700;letter-spacing:.1em;padding:7px 13px;border:2.5px solid;border-radius:8px;
+  opacity:0;transition:opacity .1s;pointer-events:none;background:rgba(251,250,248,.92)}
+.stamp.y{right:16px;color:var(--ok);border-color:var(--ok);transform:rotate(11deg)}
+.stamp.n{left:16px;color:var(--no);border-color:var(--no);transform:rotate(-11deg)}
+.acts{display:flex;gap:8px;padding-bottom:calc(12px + env(safe-area-inset-bottom));flex:none}
+.acts button{flex:1;padding:14px 6px;border:none;border-radius:12px;font-size:13.5px;
+  font-weight:650;cursor:pointer;transition:transform .12s}
+.acts button:active{transform:scale(.95)}
+.bNo{background:#F6DED9;color:var(--no);border:1px solid #EFCCC4!important}
+.bRev{background:#F7E9D2;color:var(--rev);border:1px solid #EEDCBD!important}
+.bYes{background:var(--lime);color:#1D2A06;border:1px solid #C9EA35!important}
 
-  .panel{position:absolute;inset:16px;display:none;flex-direction:column;align-items:center;
-         justify-content:center;text-align:center;gap:14px}
-  .panel.on{display:flex}
-  .panel .em{font-size:52px}
-  .panel h2{font-size:20px;font-weight:650}
-  .panel p{font-size:13.5px;opacity:.9;max-width:300px;line-height:1.55}
-  .panel code{background:rgba(0,0,0,.25);padding:2px 7px;border-radius:5px;font-size:12.5px}
-  .ghost{background:#fff;color:#5b4b9e;border:none;padding:12px 26px;border-radius:22px;
-         font-weight:650;font-size:14px;cursor:pointer}
-  .ghost:active{transform:scale(.95)}
-  .spin{width:34px;height:34px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;
-        border-radius:50%;animation:sp .8s linear infinite}
-  @keyframes sp{to{transform:rotate(360deg)}}
+/* ---------- summary ---------- */
+#done{overflow-y:auto;padding:26px 18px calc(30px + env(safe-area-inset-bottom))}
+#done h1{font-size:32px;font-weight:400;letter-spacing:-.02em;line-height:1.05;margin:10px 0 6px}
+#done h1 em{font-style:italic}
+.lead{font-size:13.5px;color:#5F5D55;margin-bottom:22px}
+.grp{margin-bottom:20px}
+.grp>.mono{margin-bottom:9px;display:block}
+.row{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;background:var(--card);
+  border:1px solid var(--line);border-radius:11px;margin-bottom:7px}
+.row .sw{width:34px;height:34px;border-radius:7px;object-fit:cover;flex:none;background:#E8E5DC}
+.row .n{font-size:13.5px;font-weight:600}
+.row .c{font-size:12px;color:#6C6A61;margin-top:3px;line-height:1.45;white-space:pre-wrap}
+.send{display:flex;gap:8px;margin-top:20px}
+.send button{flex:1;padding:14px;border:none;border-radius:12px;font-weight:650;font-size:13.5px;cursor:pointer}
+.wa{background:#25D366;color:#fff}
+.cp{background:var(--ink);color:#fff}
+.restart{width:100%;margin-top:8px;padding:13px;border:1px solid var(--line);border-radius:12px;
+  background:transparent;color:var(--mut);font-weight:600;font-size:12.5px;cursor:pointer}
 
-  footer{padding:8px 16px calc(10px + env(safe-area-inset-bottom)) 16px;display:flex;
-          align-items:center;justify-content:center;gap:14px;font-size:12px;font-weight:650;
-          background:rgba(0,0,0,.14)}
-  footer span{display:flex;align-items:center;gap:5px}
+/* ---------- note sheet ---------- */
+.modal{position:fixed;inset:0;background:rgba(21,21,15,.5);z-index:99;display:none;align-items:flex-end}
+.modal.on{display:flex}
+.sheet{background:var(--card);width:100%;border-radius:20px 20px 0 0;
+  padding:22px 18px calc(22px + env(safe-area-inset-bottom));max-height:90vh;overflow-y:auto}
+.sheet h3{font-size:19px;font-weight:400;font-family:Georgia,serif;margin-bottom:16px}
+.sheet label{display:block;margin-bottom:7px}
+.sheet textarea,.sheet select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;
+  font-size:16px;font-family:inherit;background:#fff;color:var(--ink);margin-bottom:15px;
+  -webkit-user-select:text;user-select:text}
+.sheet textarea{min-height:104px;resize:vertical}
+.sheet textarea:focus,.sheet select:focus{outline:none;border-color:var(--ink)}
+.sheet .btns{display:flex;gap:9px}
+.sheet .btns button{flex:1;padding:14px;border:none;border-radius:12px;font-weight:650;font-size:14px;cursor:pointer}
+.cancel{background:#EDEAE1;color:#55534B}
+.save{background:var(--ink);color:#fff}
 
-  /* results */
-  .results{position:absolute;inset:0;background:#fff;color:#222;border-radius:18px;overflow-y:auto;
-           padding:20px;display:none}
-  .results.on{display:block}
-  .results h2{font-size:19px;margin-bottom:4px}
-  .results .lead{font-size:13px;color:#777;margin-bottom:16px}
-  .grp{margin-bottom:16px}
-  .grp h3{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#999;margin-bottom:7px}
-  .row{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border-radius:9px;
-       background:#f7f7f9;margin-bottom:6px;font-size:13px;line-height:1.4}
-  .row .n{font-weight:600}
-  .row .c{color:#666;font-size:12px;margin-top:3px;white-space:pre-wrap}
-  .results .send{display:flex;gap:8px;margin-top:8px}
-  .results .send button{flex:1;padding:13px;border:none;border-radius:10px;font-weight:650;
-                        font-size:13.5px;color:#fff;cursor:pointer}
-  .wa{background:#25d366}.cp{background:#5b4b9e}
-  .again{width:100%;margin-top:8px;padding:12px;border:none;border-radius:10px;background:#eee;
-         color:#555;font-weight:650;font-size:13px;cursor:pointer}
-
-  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;display:none;align-items:flex-end}
-  .modal.on{display:flex}
-  .sheet{background:#fff;color:#222;width:100%;border-radius:18px 18px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom)) 18px;max-height:88vh;overflow-y:auto}
-  .sheet h3{font-size:16px;margin-bottom:14px}
-  .sheet label{display:block;font-size:12px;font-weight:650;margin-bottom:6px;color:#444}
-  .sheet textarea,.sheet select{width:100%;padding:11px;border:1px solid #ddd;border-radius:9px;
-                                font-size:15px;font-family:inherit;margin-bottom:14px;
-                                -webkit-user-select:text;user-select:text}
-  .sheet textarea{min-height:100px;resize:vertical}
-  .sheet textarea:focus,.sheet select:focus{outline:none;border-color:#667eea}
-  .sheet .btns{display:flex;gap:9px}
-  .sheet .btns button{flex:1;padding:13px;border:none;border-radius:10px;font-weight:650;font-size:14px;cursor:pointer}
-  .cancel{background:#f0f0f2;color:#444}.save{background:#ffa502;color:#fff}
+@media(min-width:720px){
+  #home,#done{max-width:760px;margin:0 auto;width:100%}
+  .stage{max-width:440px;margin:0 auto;width:100%}
+  .acts{max-width:440px;margin:0 auto;width:100%}
+  .projects{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .proj{margin-bottom:0}
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="t">
-    <h1>🎨 Design Approval</h1>
-    <p id="hp">Loading…</p>
+  <span class="dot"></span>
+  <div class="brand">
+    <div class="mono">Webook / Review</div>
   </div>
-  <button class="icon-btn" id="refresh" title="Check for new designs">🔄</button>
+  <button class="iconbtn" id="homeBtn" title="All collections">&#9633;</button>
 </header>
 
 <main>
-  <div class="stack" id="stack"></div>
+  <!-- ============ workspace ============ -->
+  <section class="view on" id="home">
+    <div class="hero">
+      <div class="mono">National Day merchandise</div>
+      <h1 class="serif">Two directions.<em>One decision.</em></h1>
+      <p>Swipe through each collection and mark what stays. Your notes come back as one tidy summary you can send straight to the team.</p>
+    </div>
 
-  <div class="panel on" id="pLoad"><div class="spin"></div><p>Loading designs…</p></div>
+    <div class="sec"><span class="mono">Collections</span><span class="mono" id="totalCount"></span></div>
+    <div class="projects" id="projects"></div>
 
-  <div class="panel" id="pEmpty">
-    <div class="em">📭</div>
-    <h2>No designs yet</h2>
-    <p>Nothing has been uploaded for review. Tap refresh once the designer has added the designs.</p>
-    <button class="ghost" onclick="load()">🔄 Check again</button>
-  </div>
+    <div class="sec" style="margin-top:26px"><span class="mono">Across both</span></div>
+    <div class="glance">
+      <div class="stat"><b id="gY">0</b><span>Approved</span></div>
+      <div class="stat"><b id="gR">0</b><span>Revise</span></div>
+      <div class="stat"><b id="gN">0</b><span>Passed on</span></div>
+    </div>
+  </section>
 
-  <div class="panel" id="pErr">
-    <div class="em">📡</div>
-    <h2>Couldn't load</h2>
-    <p id="errMsg">Check your connection and try again.</p>
-    <button class="ghost" onclick="load()">🔄 Retry</button>
-  </div>
+  <!-- ============ deck ============ -->
+  <section class="view" id="deck">
+    <div class="deckhead">
+      <button class="back" id="backBtn">&larr;</button>
+      <div class="t"><h2 id="deckName"></h2><div class="mono" id="deckPos"></div></div>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="acts">
+      <button class="bNo"  id="aNo">Pass</button>
+      <button class="bRev" id="aRev">Note</button>
+      <button class="bYes" id="aYes">Approve</button>
+    </div>
+  </section>
 
-  <div class="results" id="results"></div>
+  <!-- ============ summary ============ -->
+  <section class="view" id="done"></section>
 </main>
-
-<footer id="foot" style="display:none">
-  <span style="color:#7bffb0">✅ <b id="cY">0</b></span>
-  <span style="color:#ff9aa2">❌ <b id="cN">0</b></span>
-  <span style="color:#ffd48a">💬 <b id="cC">0</b></span>
-  <span style="opacity:.7" id="prog"></span>
-</footer>
 
 <div class="modal" id="modal">
   <div class="sheet">
-    <h3 id="mTitle">Add feedback</h3>
-    <label>Your comments</label>
-    <textarea id="mText" placeholder="What needs to change?"></textarea>
-    <label>Suggested action</label>
-    <select id="mAction">
-      <option value="Needs revision">Needs revision</option>
-      <option value="Approved with changes">Approved with changes</option>
-      <option value="Discuss on call">Discuss on call</option>
-      <option value="Rejected">Rejected</option>
+    <h3 id="mTitle">Add a note</h3>
+    <label class="mono">What needs to change</label>
+    <textarea id="mText" placeholder="Colour, sizing, placement&hellip;"></textarea>
+    <label class="mono">Outcome</label>
+    <select id="mAct">
+      <option>Needs revision</option>
+      <option>Approve with changes</option>
+      <option>Discuss on call</option>
+      <option>Pass on this one</option>
     </select>
     <div class="btns">
-      <button class="cancel" onclick="closeModal()">Cancel</button>
-      <button class="save" onclick="saveNote()">Save &amp; next</button>
+      <button class="cancel" id="mCancel">Cancel</button>
+      <button class="save"   id="mSave">Save &amp; next</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ---------------------------------------------------------------
-   Reads designs straight out of the public GitHub repo.
-   No sign-in, no API key, no setup for whoever opens this page.
-   Designer adds images to the designs/ folder -> they show up here.
-----------------------------------------------------------------*/
-const REPO   = 'rabin-webook/national-day-designs';
-const FOLDER = 'designs';
-const API    = `https://api.github.com/repos/${REPO}/contents/${FOLDER}`;
-const IMG_RE = /\.(png|jpe?g|webp|gif|avif)$/i;
-const STORE  = 'wb_review_v1';
+/* Designs live in Google Drive. lh3 serves them resized, so the phone pulls
+   a few hundred KB instead of the multi-MB originals. */
+const DATA = {"nd":{"name":"National Day","tag":"ND series","items":[["01-cover","11LV3nPSmMVEp2RcJR_suLQy7pfxK9uas","Cover"],["02-ND Passport 1","16OY7fYeldoivnfnW_Jgyz-pFJsBfelIw","Passport 1"],["02-ND Passport 2","1NvB8vid-7hwL2vPs9Fdj3S_p-DJ4yeCX","Passport 2"],["02-ND Passport 3","1bMrv78RmwF4ngMStY9wiz9ti1DeeuttS","Passport 3"],["02-ND Passport 4","1YEOJRinikAKk9b8dJfLos3MY8GOqvywR","Passport 4"],["03-ND Pins 1","1siRA-ThKojNUqw4moyBG2QY1vJrVRcMn","Pins"],["04_ND Cups 1","1NBM3_WXcTOCzdwFRgwwTRq2at4u4TKcB","Cups"],["05-ND Mugs 1","13truw2roWj1_4vfkB85DB0GKrzRSriH9","Mugs"],["06-ND Phone case 1","15dIjNk6Cj77mOug1-FEMPp8TOov8ii3i","Phone case"],["07-ND Tees 1","1wN8zH4GM8AT1N4y2__1Jl661aWqc-5bQ","Tees"],["08-ND Caps 1","1vAaQIpC4VbNiv2SSjE4Ocx3qS3xIzyGP","Caps 1"],["08-ND Caps 2","10MVaWAGcKyO3v4FNhhgI7ylj-1WyHyVH","Caps 2"],["08-ND Caps 3","1V53xew1Vsldy531Aw8x7bF1WGXNXiLy9","Caps 3"],["09-ND Bracelet 1","1N5nadc64DsfEQdZn2kEFmePax8ecNdsq","Bracelet"]]},"ksa":{"name":"KSA","tag":"KSA series","items":[["KSA-02-Passport 1","1yvp4LGe3NrYwRbDQf6vrW5ktdf-KXRsx","Passport 1"],["KSA-02-Passport 2","1OiHVxOEsYnprqCX3cxHbjlw-85mwUfnC","Passport 2"],["KSA-02-Passport 3","17YVJCeOWkhqBkGbtidawpr5bJvRdbGej","Passport 3"],["KSA-02-Passport 4","1JPc1euqSin_uwGHtXf2zCFiR2NO92FSL","Passport 4"],["KSA-03-Pins 1","1dg5UzP1WJs43qA2gAOcpTbB0oRhsERIt","Pins 1"],["KSA-03-Pins 2","14oydOqsqvBMO7YINCSr8nBXLl9jlsFfj","Pins 2"],["KSA-04-Cup 1","1M64D43WvWkhdLg8Nd6zj6GJ9jeEcXCi-","Cup"],["KSA-05-Mug 1","1O67Y6KWtDkV_hh6KnWNHP835g8C4l5gs","Mug"],["KSA-06-Phone 1","1o7vPHAsjwO2iQ8hj-C9_n-P62ACuwWYM","Phone case"],["KSA-07-Tees 1","16Ua8k1wGjpm6Ypn1ANFXuxwzoXwoFgNQ","Tees"],["KSA-08-Caps 1","1FRWLroVSInq4Jm3dxj9GCunVwGwVNXw3","Caps 1"],["KSA-08-Caps 2","1kNbGl3KKmwwUaBARCP6piJkpcg0J_bfp","Caps 2"],["KSA-08-Caps 3","1-ukoriyntjIavUYE51dTR_1DyfPGXf74","Caps 3"],["KSA-09-Bracelet 1","1vIIKDw6rPr_SkX9AifQEOspJuLv6hkhE","Bracelet"]]}};
+const IMG   = (id,w) => 'https://lh3.googleusercontent.com/d/' + id + '=w' + w;
+const STORE = 'webook_review_v2';
 
-let designs = [], i = 0, decisions = {}, card = null;
-let x0 = 0, dx = 0, dragging = false;
+let decisions = load(), colKey = null, items = [], idx = 0;
+let card = null, x0 = 0, dx = 0, dragging = false;
 
-/* ---------- data ---------- */
-async function load(){
-  show('pLoad'); document.getElementById('foot').style.display='none';
-  try{
-    const r = await fetch(API, {cache:'no-store'});
-    if(r.status === 404){ return show('pEmpty'); }
-    if(r.status === 403){ return fail('GitHub is rate-limiting this connection. Wait a minute and retry.'); }
-    if(!r.ok) return fail('GitHub returned ' + r.status + '.');
+function load(){ try{ return JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(decisions)); }catch(e){} }
 
-    const files = await r.json();
-    if(!Array.isArray(files)) return show('pEmpty');
+const $ = id => document.getElementById(id);
+function view(id){ ['home','deck','done'].forEach(v => $(v).classList.toggle('on', v===id)); }
 
-    const manifest = await loadManifest(files);
-    designs = files
-      .filter(f => f.type === 'file' && IMG_RE.test(f.name))
-      .sort((a,b) => a.name.localeCompare(b.name, undefined, {numeric:true}))
-      .map(f => {
-        const m = manifest[f.name] || {};
-        return {
-          key  : f.sha,
-          url  : f.download_url,
-          title: m.title || prettify(f.name),
-          desc : m.description || '',
-          type : m.type || ''
-        };
-      });
+/* ---------------- workspace ---------------- */
+function renderHome(){
+  view('home');
+  const wrap = $('projects'); wrap.innerHTML = '';
+  let total = 0, gY = 0, gR = 0, gN = 0;
 
-    if(!designs.length) return show('pEmpty');
+  for(const [key,col] of Object.entries(DATA)){
+    total += col.items.length;
+    const done = col.items.filter(it => decisions[it[1]]).length;
+    col.items.forEach(it => { const d = decisions[it[1]]; if(!d) return;
+      if(d.v==='approved') gY++; else if(d.v==='rejected') gN++; else gR++; });
 
-    decisions = restore();
-    i = designs.findIndex(d => !decisions[d.key]);
-    if(i < 0) i = designs.length;
-    render();
-  }catch(e){
-    fail('No connection to GitHub. Check your internet and retry.');
+    const pct = Math.round(done / col.items.length * 100);
+    const state = done === 0 ? '' : (done === col.items.length ? 'done' : 'live');
+    const label = done === 0 ? 'Not started' : (done === col.items.length ? 'Reviewed' : 'In review');
+
+    const el = document.createElement('div');
+    el.className = 'proj';
+    el.innerHTML =
+      '<div class="top"><span class="pill '+state+'"><i></i>'+label+'</span></div>'+
+      '<h2 class="serif"></h2>'+
+      '<div class="thumbs"></div>'+
+      '<div class="bar"><span style="width:'+pct+'%"></span></div>'+
+      '<div class="mono">'+done+' of '+col.items.length+' reviewed</div>'+
+      '<div class="foot"><span class="mono">'+col.tag+'</span>'+
+      '<button class="open'+(done?' ghost':'')+'">'+(done && done<col.items.length ? 'Resume' : done ? 'Review again' : 'Start')+' &rarr;</button></div>';
+    el.querySelector('h2').textContent = col.name;
+    const th = el.querySelector('.thumbs');
+    col.items.slice(0,4).forEach(it => {
+      const d = document.createElement('div');
+      const im = document.createElement('img');
+      im.loading = 'lazy'; im.src = IMG(it[1], 200); im.alt = '';
+      d.appendChild(im); th.appendChild(d);
+    });
+    el.querySelector('.open').onclick = () => openCol(key);
+    wrap.appendChild(el);
   }
+
+  $('totalCount').textContent = total + ' designs';
+  $('gY').textContent = gY; $('gR').textContent = gR; $('gN').textContent = gN;
 }
 
-async function loadManifest(files){
-  if(!files.some(f => f.name === 'manifest.json')) return {};
-  try{
-    const f = files.find(f => f.name === 'manifest.json');
-    const j = await (await fetch(f.download_url, {cache:'no-store'})).json();
-    return (j && typeof j === 'object') ? j : {};
-  }catch(e){ return {}; }
+/* ---------------- deck ---------------- */
+function openCol(key){
+  colKey = key;
+  items = DATA[key].items;
+  idx = items.findIndex(it => !decisions[it[1]]);
+  if(idx < 0) idx = items.length;
+  $('deckName').textContent = DATA[key].name;
+  view('deck');
+  renderDeck();
 }
 
-function prettify(name){
-  return name.replace(IMG_RE,'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim()
-             .replace(/\b\w/g, c => c.toUpperCase());
-}
+function renderDeck(){
+  const stage = $('stage'); stage.innerHTML = '';
+  if(idx >= items.length){ return renderDone(); }
+  $('deckPos').textContent = (idx+1) + ' of ' + items.length;
 
-/* ---------- persistence (this reviewer's own progress) ---------- */
-function restore(){ try{ return JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ return {}; } }
-function persist(){ try{ localStorage.setItem(STORE, JSON.stringify(decisions)); }catch(e){} }
-
-/* ---------- rendering ---------- */
-function show(id){
-  ['pLoad','pEmpty','pErr'].forEach(p => document.getElementById(p).classList.toggle('on', p===id));
-  document.getElementById('results').classList.remove('on');
-  if(id) document.getElementById('stack').innerHTML = '';
-  document.getElementById('hp').textContent =
-    id==='pLoad' ? 'Loading…' : id==='pEmpty' ? 'Waiting for designs' : id==='pErr' ? 'Offline' : '';
-}
-function fail(msg){ document.getElementById('errMsg').textContent = msg; show('pErr'); }
-
-function render(){
-  show(null);
-  const stack = document.getElementById('stack');
-  stack.innerHTML = '';
-
-  if(i >= designs.length){ return summary(); }
-
-  document.getElementById('foot').style.display = 'flex';
-  document.getElementById('hp').textContent = 'Swipe or tap • ' + designs.length + ' design' + (designs.length>1?'s':'');
-
-  for(let k = Math.min(2, designs.length - i - 1); k >= 0; k--){
-    const d = designs[i+k];
+  for(let k = Math.min(2, items.length - idx - 1); k >= 0; k--){
+    const it = items[idx+k];
     const el = document.createElement('div');
     el.className = 'card';
     el.style.zIndex = 10 - k;
-    el.style.transform = `translateY(${k*7}px) scale(${1 - k*.025})`;
+    el.style.transform = 'translateY('+(k*6)+'px) scale('+(1-k*.022)+')';
     el.innerHTML =
-      `<div class="img"><span class="ph">Loading image…</span>
-         <img src="${d.url}" alt="" onload="this.previousElementSibling.remove()"
-              onerror="this.previousElementSibling.textContent='Image unavailable'">
-       </div>
-       <div class="badge y">APPROVE</div><div class="badge n">REJECT</div>
-       <div class="meta">
-         <h2></h2>
-         <div class="sub"></div>
-         ${d.desc ? '<div class="desc"></div>' : ''}
-       </div>
-       <div class="acts">
-         <button class="no">❌ Reject</button>
-         <button class="mid">💬 Comment</button>
-         <button class="yes">✅ Approve</button>
-       </div>`;
-    el.querySelector('.meta h2').textContent = d.title;
-    el.querySelector('.meta .sub').textContent = (d.type ? d.type + ' • ' : '') + 'Design ' + (i+k+1) + ' of ' + designs.length;
-    if(d.desc) el.querySelector('.meta .desc').textContent = d.desc;
-    el.querySelector('.no').onclick  = e => { e.stopPropagation(); decide('rejected'); };
-    el.querySelector('.yes').onclick = e => { e.stopPropagation(); decide('approved'); };
-    el.querySelector('.mid').onclick = e => { e.stopPropagation(); openModal(); };
-    stack.appendChild(el);
-    if(k === 0){ card = el; attachDrag(el); }
+      '<div class="shot"><span class="ph">Loading&hellip;</span>'+
+        '<img alt="" onload="this.previousElementSibling.remove()" '+
+             'onerror="this.previousElementSibling.textContent=\'Image unavailable\'">'+
+      '</div>'+
+      '<div class="stamp y">KEEP</div><div class="stamp n">PASS</div>'+
+      '<div class="cap"><h3></h3><span class="mono"></span></div>';
+    el.querySelector('img').src = IMG(it[1], 1400);
+    el.querySelector('h3').textContent = it[2];
+    el.querySelector('.cap .mono').textContent = DATA[colKey].tag;
+    stage.appendChild(el);
+    if(k === 0){ card = el; bindDrag(el); }
   }
-  counts();
 }
 
-function counts(){
-  const v = Object.values(decisions);
-  document.getElementById('cY').textContent = v.filter(d => d.verdict==='approved').length;
-  document.getElementById('cN').textContent = v.filter(d => d.verdict==='rejected').length;
-  document.getElementById('cC').textContent = v.filter(d => d.note).length;
-  document.getElementById('prog').textContent = Math.min(i+1, designs.length) + '/' + designs.length;
-}
-
-/* ---------- swipe ---------- */
-function attachDrag(el){
+function bindDrag(el){
   el.addEventListener('touchstart', down, {passive:true});
   el.addEventListener('mousedown', down);
 }
 function down(e){
-  if(e.target.closest('.acts')) return;
   dragging = true; dx = 0;
   x0 = e.touches ? e.touches[0].clientX : e.clientX;
   card.style.transition = 'none';
@@ -306,12 +318,11 @@ function down(e){
 }
 function move(e){
   if(!dragging) return;
-  const x = e.touches ? e.touches[0].clientX : e.clientX;
-  dx = x - x0;
+  dx = (e.touches ? e.touches[0].clientX : e.clientX) - x0;
   if(e.cancelable && Math.abs(dx) > 8) e.preventDefault();
-  card.style.transform = `translateX(${dx}px) rotate(${dx/18}deg)`;
-  card.querySelector('.badge.y').style.opacity = dx > 25 ? Math.min(1, dx/110) : 0;
-  card.querySelector('.badge.n').style.opacity = dx < -25 ? Math.min(1, -dx/110) : 0;
+  card.style.transform = 'translateX('+dx+'px) rotate('+(dx/20)+'deg)';
+  card.querySelector('.stamp.y').style.opacity = dx >  25 ? Math.min(1,  dx/110) : 0;
+  card.querySelector('.stamp.n').style.opacity = dx < -25 ? Math.min(1, -dx/110) : 0;
 }
 function up(){
   if(!dragging) return;
@@ -320,100 +331,99 @@ function up(){
   document.removeEventListener('touchend', up);
   document.removeEventListener('mousemove', move);
   document.removeEventListener('mouseup', up);
-  card.style.transition = 'transform .28s ease-out, opacity .28s ease-out';
-  if(dx > 100)      fly(1, 'approved');
-  else if(dx < -100) fly(-1, 'rejected');
-  else{
-    card.style.transform = '';
-    card.querySelectorAll('.badge').forEach(b => b.style.opacity = 0);
-  }
+  card.style.transition = 'transform .3s ease-out, opacity .3s ease-out';
+  if(dx > 105)       fly( 1, 'approved');
+  else if(dx < -105) fly(-1, 'rejected');
+  else { card.style.transform = '';
+         card.querySelectorAll('.stamp').forEach(s => s.style.opacity = 0); }
   dx = 0;
 }
 function fly(dir, verdict){
-  card.style.transform = `translateX(${dir*window.innerWidth*1.3}px) rotate(${dir*28}deg)`;
+  card.style.transform = 'translateX('+(dir*innerWidth*1.25)+'px) rotate('+(dir*24)+'deg)';
   card.style.opacity = 0;
-  setTimeout(() => decide(verdict), 190);
+  setTimeout(() => decide(verdict), 200);
 }
 
-/* ---------- decisions ---------- */
-function decide(verdict, note, action){
-  const d = designs[i];
-  if(!d) return;
-  decisions[d.key] = {title:d.title, verdict:verdict, note:note||'', action:action||''};
-  persist();
-  i++;
-  render();
+function decide(v, note, act){
+  const it = items[idx];
+  if(!it) return;
+  decisions[it[1]] = {v:v, t:it[2], c:colKey, note:note||'', act:act||''};
+  save(); idx++; renderDeck();
 }
 
-function openModal(){
-  document.getElementById('mTitle').textContent = designs[i].title;
-  document.getElementById('mText').value = '';
-  document.getElementById('modal').classList.add('on');
-  setTimeout(() => document.getElementById('mText').focus(), 120);
+/* ---------------- note sheet ---------------- */
+function openNote(){
+  if(idx >= items.length) return;
+  $('mTitle').textContent = items[idx][2];
+  $('mText').value = '';
+  $('modal').classList.add('on');
+  setTimeout(() => $('mText').focus(), 130);
 }
-function closeModal(){ document.getElementById('modal').classList.remove('on'); }
-function saveNote(){
-  const t = document.getElementById('mText').value.trim();
-  if(!t){ document.getElementById('mText').focus(); return; }
-  const a = document.getElementById('mAction').value;
-  closeModal();
-  decide(a === 'Rejected' ? 'rejected' : 'commented', t, a);
-}
+function closeNote(){ $('modal').classList.remove('on'); }
 
-/* ---------- summary ---------- */
-function summary(){
-  document.getElementById('foot').style.display = 'none';
-  document.getElementById('hp').textContent = 'Review complete';
-  const list = designs.map(d => Object.assign({title:d.title}, decisions[d.key] || {})).filter(d => d.verdict);
-  const yes  = list.filter(d => d.verdict === 'approved' && !d.note);
-  const no   = list.filter(d => d.verdict === 'rejected');
-  const note = list.filter(d => d.note);
+/* ---------------- summary ---------------- */
+function renderDone(){
+  view('done');
+  const all = items.map(it => Object.assign({t:it[2], id:it[1]}, decisions[it[1]] || {})).filter(d => d.v);
+  const yes  = all.filter(d => d.v === 'approved');
+  const rev  = all.filter(d => d.v === 'commented');
+  const no   = all.filter(d => d.v === 'rejected');
 
-  const grp = (label, arr, showNote) => !arr.length ? '' :
-    `<div class="grp"><h3>${label} (${arr.length})</h3>` +
-    arr.map(d => `<div class="row"><div><div class="n">${esc(d.title)}</div>` +
-      (showNote && d.note ? `<div class="c">${esc(d.action ? d.action + ' — ' : '')}${esc(d.note)}</div>` : '') +
-      `</div></div>`).join('') + `</div>`;
+  const grp = (label, arr) => !arr.length ? '' :
+    '<div class="grp"><span class="mono">'+label+' &middot; '+arr.length+'</span>' +
+    arr.map(d =>
+      '<div class="row"><img class="sw" loading="lazy" src="'+IMG(d.id,120)+'" alt="">'+
+      '<div><div class="n">'+esc(d.t)+'</div>'+
+      (d.note ? '<div class="c">'+esc(d.act ? d.act+' — ' : '')+esc(d.note)+'</div>' : '')+
+      '</div></div>').join('') + '</div>';
 
-  const r = document.getElementById('results');
-  r.innerHTML =
-    `<h2>✅ All ${designs.length} reviewed</h2>
-     <p class="lead">${yes.length} approved · ${no.length} rejected · ${note.length} with comments</p>
-     ${grp('Approved', yes, false)}${grp('Rejected', no, true)}${grp('Comments', note, true)}
-     <div class="send">
-       <button class="wa" id="bWa">💬 Send on WhatsApp</button>
-       <button class="cp" id="bCp">📋 Copy</button>
-     </div>
-     <button class="again" id="bAgain">↩︎ Review again from the start</button>`;
-  r.classList.add('on');
+  $('done').innerHTML =
+    '<div class="mono">'+DATA[colKey].name+' complete</div>'+
+    '<h1 class="serif">All '+items.length+' seen.<em>Here it is.</em></h1>'+
+    '<p class="lead">'+yes.length+' approved &middot; '+rev.length+' to revise &middot; '+no.length+' passed on</p>'+
+    grp('Approved', yes) + grp('Needs work', rev) + grp('Passed on', no) +
+    '<div class="send"><button class="wa" id="bWa">Send on WhatsApp</button>'+
+    '<button class="cp" id="bCp">Copy</button></div>'+
+    '<button class="restart" id="bAgain">Review this collection again</button>';
 
-  const text = buildText(yes, no, note);
-  document.getElementById('bWa').onclick = () =>
-    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
-  document.getElementById('bCp').onclick = e => {
-    navigator.clipboard.writeText(text)
-      .then(() => { e.target.textContent = '✓ Copied'; setTimeout(() => e.target.textContent = '📋 Copy', 1600); })
-      .catch(() => {});
+  const text = summaryText(DATA[colKey].name, yes, rev, no);
+  $('bWa').onclick = () => open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  $('bCp').onclick = e => navigator.clipboard.writeText(text)
+    .then(() => { e.target.textContent = 'Copied'; setTimeout(() => e.target.textContent = 'Copy', 1600); })
+    .catch(() => {});
+  $('bAgain').onclick = () => {
+    items.forEach(it => delete decisions[it[1]]);
+    save(); idx = 0; view('deck'); renderDeck();
   };
-  document.getElementById('bAgain').onclick = () => { decisions = {}; persist(); i = 0; render(); };
 }
 
-function buildText(yes, no, note){
-  let t = 'Design review — ' + new Date().toLocaleDateString() + '\n\n';
-  if(yes.length)  t += 'APPROVED\n' + yes.map(d => '• ' + d.title).join('\n') + '\n\n';
-  if(no.length)   t += 'REJECTED\n' + no.map(d => '• ' + d.title + (d.note ? ' — ' + d.note : '')).join('\n') + '\n\n';
-  if(note.length) t += 'COMMENTS\n' + note.map(d => '• ' + d.title + ' (' + d.action + ') — ' + d.note).join('\n') + '\n';
+function summaryText(name, yes, rev, no){
+  let t = name + ' — design review\n' + new Date().toLocaleDateString() + '\n';
+  if(yes.length) t += '\nAPPROVED\n' + yes.map(d => '- ' + d.t).join('\n') + '\n';
+  if(rev.length) t += '\nNEEDS WORK\n' + rev.map(d => '- ' + d.t + ' (' + d.act + ') — ' + d.note).join('\n') + '\n';
+  if(no.length)  t += '\nPASSED ON\n' + no.map(d => '- ' + d.t + (d.note ? ' — ' + d.note : '')).join('\n') + '\n';
   return t.trim();
 }
 
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
-/* ---------- boot ---------- */
-document.getElementById('refresh').onclick = load;
-document.getElementById('modal').onclick = e => { if(e.target.id === 'modal') closeModal(); };
-load();
-/* Unauthenticated GitHub API allows 60 calls/hour per IP, so poll gently. */
-setInterval(() => { if(i >= designs.length || !designs.length) load(); }, 180000);
+/* ---------------- wiring ---------------- */
+$('aYes').onclick = () => decide('approved');
+$('aNo').onclick  = () => decide('rejected');
+$('aRev').onclick = openNote;
+$('mCancel').onclick = closeNote;
+$('mSave').onclick = () => {
+  const t = $('mText').value.trim();
+  if(!t){ $('mText').focus(); return; }
+  const a = $('mAct').value;
+  closeNote();
+  decide(a === 'Pass on this one' ? 'rejected' : 'commented', t, a);
+};
+$('modal').onclick = e => { if(e.target.id === 'modal') closeNote(); };
+$('backBtn').onclick = renderHome;
+$('homeBtn').onclick = renderHome;
+
+renderHome();
 </script>
 </body>
 </html>
