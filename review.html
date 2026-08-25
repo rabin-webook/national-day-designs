@@ -76,9 +76,18 @@ main{flex:1;position:relative;overflow:hidden;min-height:0}
 .stage{flex:1;position:relative;min-height:0;margin-bottom:10px}
 .card{position:absolute;inset:0;background:var(--card);border:1px solid var(--line);
   border-radius:18px;overflow:hidden;display:flex;flex-direction:column;
-  box-shadow:0 8px 28px rgba(20,20,15,.10);touch-action:pan-y;will-change:transform}
-.card .shot{flex:1;min-height:0;background:#EAE7DE;display:flex;align-items:center;justify-content:center;position:relative}
-.card .shot img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
+  box-shadow:0 8px 28px rgba(20,20,15,.10);touch-action:none;will-change:transform}
+.card .shot{flex:1;min-height:0;background:#EAE7DE;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;touch-action:none}
+.card .shot img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;
+  transform-origin:center center;will-change:transform}
+.zbadge{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:6;
+  background:rgba(21,21,15,.8);color:#fff;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;
+  letter-spacing:.09em;text-transform:uppercase;padding:5px 6px 5px 12px;border-radius:20px;
+  display:none;align-items:center;gap:9px}
+.zbadge.on{display:inline-flex}
+.zreset{background:var(--lime);color:#1D2A06;border:none;border-radius:13px;padding:4px 10px;
+  font:inherit;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
 .card .ph{position:absolute;font-size:11px;color:#A9A79E;font-family:ui-monospace,Menlo,monospace}
 .card .cap{padding:12px 14px;border-top:1px solid var(--line);display:flex;
   align-items:center;justify-content:space-between;gap:10px;flex:none}
@@ -229,8 +238,6 @@ main{flex:1;position:relative;overflow:hidden;min-height:0}
 const DATA = {"nd":{"name":"National Day","tag":"ND series","items":[["02-ND Passport 1","16OY7fYeldoivnfnW_Jgyz-pFJsBfelIw","Passport 1"],["02-ND Passport 2","1NvB8vid-7hwL2vPs9Fdj3S_p-DJ4yeCX","Passport 2"],["02-ND Passport 3","1bMrv78RmwF4ngMStY9wiz9ti1DeeuttS","Passport 3"],["02-ND Passport 4","1YEOJRinikAKk9b8dJfLos3MY8GOqvywR","Passport 4"],["03-ND Pins 1","1siRA-ThKojNUqw4moyBG2QY1vJrVRcMn","Pins"],["04_ND Cups 1","1NBM3_WXcTOCzdwFRgwwTRq2at4u4TKcB","Cups"],["05-ND Mugs 1","13truw2roWj1_4vfkB85DB0GKrzRSriH9","Mugs"],["06-ND Phone case 1","15dIjNk6Cj77mOug1-FEMPp8TOov8ii3i","Phone case"],["07-ND Tees 1","1wN8zH4GM8AT1N4y2__1Jl661aWqc-5bQ","Tees"],["08-ND Caps 1","1vAaQIpC4VbNiv2SSjE4Ocx3qS3xIzyGP","Caps 1"],["08-ND Caps 2","10MVaWAGcKyO3v4FNhhgI7ylj-1WyHyVH","Caps 2"],["08-ND Caps 3","1V53xew1Vsldy531Aw8x7bF1WGXNXiLy9","Caps 3"],["09-ND Bracelet 1","1N5nadc64DsfEQdZn2kEFmePax8ecNdsq","Bracelet"]]},"ksa":{"name":"KSA","tag":"KSA series","items":[["KSA-02-Passport 1","1yvp4LGe3NrYwRbDQf6vrW5ktdf-KXRsx","Passport 1"],["KSA-02-Passport 2","1OiHVxOEsYnprqCX3cxHbjlw-85mwUfnC","Passport 2"],["KSA-02-Passport 3","17YVJCeOWkhqBkGbtidawpr5bJvRdbGej","Passport 3"],["KSA-02-Passport 4","1JPc1euqSin_uwGHtXf2zCFiR2NO92FSL","Passport 4"],["KSA-03-Pins 1","1dg5UzP1WJs43qA2gAOcpTbB0oRhsERIt","Pins 1"],["KSA-03-Pins 2","14oydOqsqvBMO7YINCSr8nBXLl9jlsFfj","Pins 2"],["KSA-04-Cup 1","1M64D43WvWkhdLg8Nd6zj6GJ9jeEcXCi-","Cup"],["KSA-05-Mug 1","1O67Y6KWtDkV_hh6KnWNHP835g8C4l5gs","Mug"],["KSA-06-Phone 1","1o7vPHAsjwO2iQ8hj-C9_n-P62ACuwWYM","Phone case"],["KSA-07-Tees 1","16Ua8k1wGjpm6Ypn1ANFXuxwzoXwoFgNQ","Tees"],["KSA-08-Caps 1","1FRWLroVSInq4Jm3dxj9GCunVwGwVNXw3","Caps 1"],["KSA-08-Caps 2","1kNbGl3KKmwwUaBARCP6piJkpcg0J_bfp","Caps 2"],["KSA-08-Caps 3","1-ukoriyntjIavUYE51dTR_1DyfPGXf74","Caps 3"],["KSA-09-Bracelet 1","1vIIKDw6rPr_SkX9AifQEOspJuLv6hkhE","Bracelet"]]}};
 const IMG   = (id,w) => 'https://lh3.googleusercontent.com/d/' + id + '=w' + w;
 const STORE = 'webook_review_v2';
-/* Summaries go straight to this WhatsApp number instead of a contact picker. */
-const SEND_TO = '96895139230';
 
 let decisions = load(), colKey = null, items = [], idx = 0;
 let card = null, x0 = 0, dx = 0, dragging = false;
@@ -286,7 +293,7 @@ function renderHome(){
   $('sendAll').style.display = any ? 'block' : 'none';
   if(any){
     const text = combinedText();
-    $('allWa').onclick = () => open('https://wa.me/' + SEND_TO + '?text=' + encodeURIComponent(text), '_blank');
+    $('allWa').onclick = () => open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
     $('allCp').onclick = e => navigator.clipboard.writeText(text)
       .then(() => { e.target.textContent = 'Copied'; setTimeout(() => e.target.textContent = 'Copy', 1600); })
       .catch(() => {});
@@ -324,7 +331,7 @@ function openCol(key){
 function renderDeck(){
   const stage = $('stage'); stage.innerHTML = '';
   if(idx >= items.length){ return renderDone(); }
-  $('deckPos').textContent = (idx+1) + ' of ' + items.length;
+  $('deckPos').textContent = (idx+1) + ' of ' + items.length + '  ·  pinch or double-tap to zoom';
 
   for(let k = Math.min(2, items.length - idx - 1); k >= 0; k--){
     const it = items[idx+k];
@@ -336,6 +343,7 @@ function renderDeck(){
       '<div class="shot"><span class="ph">Loading&hellip;</span>'+
         '<img alt="" onload="this.previousElementSibling.remove()" '+
              'onerror="this.previousElementSibling.textContent=\'Image unavailable\'">'+
+         '<div class="zbadge"><span>Zoomed</span><button class="zreset">Reset</button></div>'+
       '</div>'+
       '<div class="stamp y">KEEP</div><div class="stamp n">PASS</div>'+
       '<div class="cap"><h3></h3><span class="mono"></span></div>';
@@ -347,11 +355,115 @@ function renderDeck(){
   }
 }
 
-function bindDrag(el){
-  el.addEventListener('touchstart', down, {passive:true});
-  el.addEventListener('mousedown', down);
+/* Two fingers always mean zoom, never swipe. One finger pans while zoomed
+   and swipes at rest, so the two gestures can never fight each other. */
+let zoom = {s:1, tx:0, ty:0};
+let imgEl = null, badgeEl = null;
+let pinching = false, panning = false, pd0 = 0, ps0 = 1, ppx = 0, ppy = 0, lastTap = 0;
+
+function dist(t){ return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY); }
+function zoomed(){ return zoom.s > 1.01; }
+
+function applyZoom(anim){
+  if(!imgEl) return;
+  imgEl.style.transition = anim ? 'transform .2s ease-out' : 'none';
+  imgEl.style.transform  = 'translate('+zoom.tx+'px,'+zoom.ty+'px) scale('+zoom.s+')';
+  if(badgeEl) badgeEl.classList.toggle('on', zoomed());
 }
+function clampPan(){
+  if(!imgEl) return;
+  const mx = (zoom.s - 1) * imgEl.clientWidth  / 2;
+  const my = (zoom.s - 1) * imgEl.clientHeight / 2;
+  zoom.tx = Math.max(-mx, Math.min(mx, zoom.tx));
+  zoom.ty = Math.max(-my, Math.min(my, zoom.ty));
+}
+function resetZoom(anim){ zoom = {s:1, tx:0, ty:0}; applyZoom(anim); }
+function toggleZoom(){ zoom.s = zoomed() ? 1 : 2.4; zoom.tx = 0; zoom.ty = 0; applyZoom(true); }
+
+function bindDrag(el){
+  imgEl   = el.querySelector('.shot img');
+  badgeEl = el.querySelector('.zbadge');
+  resetZoom(false);
+  el.addEventListener('touchstart', tStart, {passive:false});
+  el.addEventListener('mousedown', down);
+  const shot = el.querySelector('.shot');
+  shot.addEventListener('wheel', onWheel, {passive:false});
+  shot.addEventListener('dblclick', e => { e.preventDefault(); toggleZoom(); });
+  el.querySelector('.zreset').onclick = e => { e.stopPropagation(); resetZoom(true); };
+}
+
+function onWheel(e){
+  e.preventDefault();
+  zoom.s = Math.max(1, Math.min(5, zoom.s * (e.deltaY < 0 ? 1.16 : 0.86)));
+  if(!zoomed()){ zoom.tx = 0; zoom.ty = 0; }
+  clampPan(); applyZoom(false);
+}
+
+function tStart(e){
+  if(e.touches.length === 2){
+    if(dragging){                       // a swipe had begun - abandon it
+      dragging = false;
+      card.style.transition = 'transform .2s ease-out';
+      card.style.transform = '';
+      card.querySelectorAll('.stamp').forEach(s => s.style.opacity = 0);
+    }
+    pinching = true; panning = false;
+    pd0 = dist(e.touches); ps0 = zoom.s;
+    e.preventDefault();
+    document.addEventListener('touchmove', tMove, {passive:false});
+    document.addEventListener('touchend', tEnd);
+    return;
+  }
+  if(e.touches.length !== 1) return;
+
+  const now = Date.now();
+  if(now - lastTap < 300){ lastTap = 0; e.preventDefault(); toggleZoom(); return; }
+  lastTap = now;
+
+  if(zoomed()){
+    panning = true;
+    ppx = e.touches[0].clientX - zoom.tx;
+    ppy = e.touches[0].clientY - zoom.ty;
+    e.preventDefault();
+    document.addEventListener('touchmove', tMove, {passive:false});
+    document.addEventListener('touchend', tEnd);
+    return;
+  }
+  down(e);
+}
+function tMove(e){
+  if(pinching && e.touches.length === 2){
+    e.preventDefault();
+    zoom.s = Math.max(1, Math.min(5, ps0 * dist(e.touches) / pd0));
+    if(!zoomed()){ zoom.tx = 0; zoom.ty = 0; }
+    clampPan(); applyZoom(false);
+    return;
+  }
+  if(panning && e.touches.length === 1){
+    e.preventDefault();
+    zoom.tx = e.touches[0].clientX - ppx;
+    zoom.ty = e.touches[0].clientY - ppy;
+    clampPan(); applyZoom(false);
+  }
+}
+function tEnd(e){
+  if(e.touches && e.touches.length > 0) return;
+  if(pinching){ pinching = false; if(!zoomed()) resetZoom(true); }
+  panning = false;
+  document.removeEventListener('touchmove', tMove);
+  document.removeEventListener('touchend', tEnd);
+}
+
 function down(e){
+  if(!e.touches && zoomed()){                 // desktop: drag pans while zoomed
+    panning = true;
+    ppx = e.clientX - zoom.tx; ppy = e.clientY - zoom.ty;
+    document.addEventListener('mousemove', mPan);
+    document.addEventListener('mouseup', mPanEnd);
+    e.preventDefault();
+    return;
+  }
+  if(zoomed()) return;                        // never swipe a zoomed card
   dragging = true; dx = 0;
   x0 = e.touches ? e.touches[0].clientX : e.clientX;
   card.style.transition = 'none';
@@ -360,8 +472,12 @@ function down(e){
   document.addEventListener('mousemove', move);
   document.addEventListener('mouseup', up);
 }
+function mPan(e){ zoom.tx = e.clientX - ppx; zoom.ty = e.clientY - ppy; clampPan(); applyZoom(false); }
+function mPanEnd(){ panning = false;
+  document.removeEventListener('mousemove', mPan);
+  document.removeEventListener('mouseup', mPanEnd); }
 function move(e){
-  if(!dragging) return;
+  if(!dragging || zoomed()) return;
   dx = (e.touches ? e.touches[0].clientX : e.clientX) - x0;
   if(e.cancelable && Math.abs(dx) > 8) e.preventDefault();
   card.style.transform = 'translateX('+dx+'px) rotate('+(dx/20)+'deg)';
@@ -434,7 +550,7 @@ function renderDone(){
     '<button class="restart" id="bAgain">Review this collection again</button>';
 
   const text = summaryText(DATA[colKey].name, yes, rev, no);
-  $('bWa').onclick = () => open('https://wa.me/' + SEND_TO + '?text=' + encodeURIComponent(text), '_blank');
+  $('bWa').onclick = () => open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
   $('bCp').onclick = e => navigator.clipboard.writeText(text)
     .then(() => { e.target.textContent = 'Copied'; setTimeout(() => e.target.textContent = 'Copy', 1600); })
     .catch(() => {});
