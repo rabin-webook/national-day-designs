@@ -1,0 +1,8 @@
+{
+  "_readme": "Optional. Add an entry per image file to give it a nicer title, a description, and a product type. Any image without an entry still shows up, titled from its filename.",
+  "01-example-design.png": {
+    "title": "Example — delete this entry",
+    "description": "Shown under the design name on the card.",
+    "type": "Packaging"
+  }
+}
