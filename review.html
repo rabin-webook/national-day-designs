@@ -229,6 +229,8 @@ main{flex:1;position:relative;overflow:hidden;min-height:0}
 const DATA = {"nd":{"name":"National Day","tag":"ND series","items":[["02-ND Passport 1","16OY7fYeldoivnfnW_Jgyz-pFJsBfelIw","Passport 1"],["02-ND Passport 2","1NvB8vid-7hwL2vPs9Fdj3S_p-DJ4yeCX","Passport 2"],["02-ND Passport 3","1bMrv78RmwF4ngMStY9wiz9ti1DeeuttS","Passport 3"],["02-ND Passport 4","1YEOJRinikAKk9b8dJfLos3MY8GOqvywR","Passport 4"],["03-ND Pins 1","1siRA-ThKojNUqw4moyBG2QY1vJrVRcMn","Pins"],["04_ND Cups 1","1NBM3_WXcTOCzdwFRgwwTRq2at4u4TKcB","Cups"],["05-ND Mugs 1","13truw2roWj1_4vfkB85DB0GKrzRSriH9","Mugs"],["06-ND Phone case 1","15dIjNk6Cj77mOug1-FEMPp8TOov8ii3i","Phone case"],["07-ND Tees 1","1wN8zH4GM8AT1N4y2__1Jl661aWqc-5bQ","Tees"],["08-ND Caps 1","1vAaQIpC4VbNiv2SSjE4Ocx3qS3xIzyGP","Caps 1"],["08-ND Caps 2","10MVaWAGcKyO3v4FNhhgI7ylj-1WyHyVH","Caps 2"],["08-ND Caps 3","1V53xew1Vsldy531Aw8x7bF1WGXNXiLy9","Caps 3"],["09-ND Bracelet 1","1N5nadc64DsfEQdZn2kEFmePax8ecNdsq","Bracelet"]]},"ksa":{"name":"KSA","tag":"KSA series","items":[["KSA-02-Passport 1","1yvp4LGe3NrYwRbDQf6vrW5ktdf-KXRsx","Passport 1"],["KSA-02-Passport 2","1OiHVxOEsYnprqCX3cxHbjlw-85mwUfnC","Passport 2"],["KSA-02-Passport 3","17YVJCeOWkhqBkGbtidawpr5bJvRdbGej","Passport 3"],["KSA-02-Passport 4","1JPc1euqSin_uwGHtXf2zCFiR2NO92FSL","Passport 4"],["KSA-03-Pins 1","1dg5UzP1WJs43qA2gAOcpTbB0oRhsERIt","Pins 1"],["KSA-03-Pins 2","14oydOqsqvBMO7YINCSr8nBXLl9jlsFfj","Pins 2"],["KSA-04-Cup 1","1M64D43WvWkhdLg8Nd6zj6GJ9jeEcXCi-","Cup"],["KSA-05-Mug 1","1O67Y6KWtDkV_hh6KnWNHP835g8C4l5gs","Mug"],["KSA-06-Phone 1","1o7vPHAsjwO2iQ8hj-C9_n-P62ACuwWYM","Phone case"],["KSA-07-Tees 1","16Ua8k1wGjpm6Ypn1ANFXuxwzoXwoFgNQ","Tees"],["KSA-08-Caps 1","1FRWLroVSInq4Jm3dxj9GCunVwGwVNXw3","Caps 1"],["KSA-08-Caps 2","1kNbGl3KKmwwUaBARCP6piJkpcg0J_bfp","Caps 2"],["KSA-08-Caps 3","1-ukoriyntjIavUYE51dTR_1DyfPGXf74","Caps 3"],["KSA-09-Bracelet 1","1vIIKDw6rPr_SkX9AifQEOspJuLv6hkhE","Bracelet"]]}};
 const IMG   = (id,w) => 'https://lh3.googleusercontent.com/d/' + id + '=w' + w;
 const STORE = 'webook_review_v2';
+/* Summaries go straight to this WhatsApp number instead of a contact picker. */
+const SEND_TO = '96895139230';
 
 let decisions = load(), colKey = null, items = [], idx = 0;
 let card = null, x0 = 0, dx = 0, dragging = false;
@@ -284,7 +286,7 @@ function renderHome(){
   $('sendAll').style.display = any ? 'block' : 'none';
   if(any){
     const text = combinedText();
-    $('allWa').onclick = () => open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    $('allWa').onclick = () => open('https://wa.me/' + SEND_TO + '?text=' + encodeURIComponent(text), '_blank');
     $('allCp').onclick = e => navigator.clipboard.writeText(text)
       .then(() => { e.target.textContent = 'Copied'; setTimeout(() => e.target.textContent = 'Copy', 1600); })
       .catch(() => {});
@@ -432,7 +434,7 @@ function renderDone(){
     '<button class="restart" id="bAgain">Review this collection again</button>';
 
   const text = summaryText(DATA[colKey].name, yes, rev, no);
-  $('bWa').onclick = () => open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  $('bWa').onclick = () => open('https://wa.me/' + SEND_TO + '?text=' + encodeURIComponent(text), '_blank');
   $('bCp').onclick = e => navigator.clipboard.writeText(text)
     .then(() => { e.target.textContent = 'Copied'; setTimeout(() => e.target.textContent = 'Copy', 1600); })
     .catch(() => {});
