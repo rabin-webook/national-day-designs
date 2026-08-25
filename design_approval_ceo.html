@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Design Approval - CEO Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .header {
+            background: rgba(0,0,0,0.2);
+            color: white;
+            padding: 16px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-stack {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 550px;
+        }
+
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            cursor: grab;
+            touch-action: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+        }
+
+        .card.dragging {
+            cursor: grabbing;
+        }
+
+        .card-image {
+            flex: 1;
+            background: #f0f0f0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .card-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .card-info {
+            padding: 16px;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .design-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .design-meta {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .design-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-reject {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-reject:active {
+            transform: scale(0.95);
+            background: #ff3838;
+        }
+
+        .btn-comment {
+            background: #ffa502;
+            color: white;
+        }
+
+        .btn-comment:active {
+            transform: scale(0.95);
+            background: #ff8b00;
+        }
+
+        .btn-approve {
+            background: #2ed573;
+            color: white;
+        }
+
+        .btn-approve:active {
+            transform: scale(0.95);
+            background: #26de81;
+        }
+
+        .empty-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            height: 100%;
+        }
+
+        .empty-state.show {
+            display: flex;
+        }
+
+        .empty-state-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .btn-reset {
+            background: white;
+            color: #667eea;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:active {
+            transform: scale(0.95);
+        }
+
+        /* Modal for comments */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: flex-end;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            border-radius: 16px 16px 0 0;
+            padding: 24px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-modal-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-modal-save {
+            background: #ffa502;
+            color: white;
+        }
+
+        .btn-modal-save:active {
+            transform: scale(0.95);
+        }
+
+        .swipe-hint {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .stats {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 50;
+        }
+
+        .stats span {
+            display: inline-block;
+            margin: 0 8px;
+        }
+
+        .stats-approve {
+            color: #2ed573;
+        }
+
+        .stats-reject {
+            color: #ff4757;
+        }
+
+        .stats-comment {
+            color: #ffa502;
+        }
+
+        .refresh-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 50;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.9) rotate(180deg);
+        }
+
+        .setup-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 300px;
+            z-index: 100;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .setup-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .setup-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .setup-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .card-stack {
+                max-width: 100%;
+                height: 500px;
+            }
+
+            .action-btn {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 Design Approval</h1>
+        <p>Swipe to approve • Tap comment for feedback</p>
+    </div>
+
+    <div class="container">
+        <div class="card-stack" id="cardStack">
+            <!-- Cards will be generated here -->
+        </div>
+
+        <div class="empty-state" id="emptyState">
+            <div class="empty-state-icon">✅</div>
+            <h2>All Designs Reviewed!</h2>
+            <p>You've reviewed all designs</p>
+            <button class="btn-reset" onclick="location.reload()">Start Over</button>
+        </div>
+
+        <div class="swipe-hint" id="swipeHint">👈 Swipe to approve/reject 👉</div>
+
+        <button class="refresh-btn" onclick="refreshDesigns()" title="Refresh designs">🔄</button>
+
+        <div class="stats" id="stats">
+            <span class="stats-approve">✅ <span id="approveCount">0</span></span>
+            <span class="stats-reject">❌ <span id="rejectCount">0</span></span>
+            <span class="stats-comment">💬 <span id="commentCount">0</span></span>
+        </div>
+    </div>
+
+    <!-- Comment Modal -->
+    <div class="modal" id="commentModal">
+        <div class="modal-content">
+            <div class="modal-header">Add Feedback</div>
+
+            <div class="form-group">
+                <label>Design Name</label>
+                <input type="text" id="designNameInput" readonly style="background: #f5f5f5;">
+            </div>
+
+            <div class="form-group">
+                <label>Your Feedback *</label>
+                <textarea id="commentInput" placeholder="Share your thoughts, suggestions, or concerns..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Suggested Action</label>
+                <select id="actionSelect" style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    <option value="">-- Select Action --</option>
+                    <option value="revision">Request Revision</option>
+                    <option value="review">Schedule Follow-up Review</option>
+                    <option value="conditional">Conditional Approval</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-modal-cancel" onclick="closeCommentModal()">Cancel</button>
+                <button class="btn-modal-save" onclick="saveComment()">Save Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let designs = [];
+        let currentIndex = 0;
+        let approvedDesigns = [];
+        let rejectedDesigns = [];
+        let commentedDesigns = [];
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        let activeCard = null;
+
+        function loadDesigns() {
+            const saved = localStorage.getItem('webook_designs');
+            if (saved) {
+                designs = JSON.parse(saved);
+                currentIndex = 0;
+                approvedDesigns = [];
+                rejectedDesigns = [];
+                commentedDesigns = [];
+                renderCards();
+                updateStats();
+            }
+        }
+
+        function refreshDesigns() {
+            loadDesigns();
+        }
+
+        function renderCards() {
+            const cardStack = document.getElementById('cardStack');
+            cardStack.innerHTML = '';
+
+            if (currentIndex >= designs.length) {
+                document.getElementById('emptyState').classList.add('show');
+                document.getElementById('swipeHint').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('emptyState').classList.remove('show');
+
+            // Show up to 3 cards in stack
+            for (let i = 0; i < Math.min(3, designs.length - currentIndex); i++) {
+                const design = designs[currentIndex + i];
+                const card = createCard(design, i);
+                cardStack.appendChild(card);
+            }
+        }
+
+        function createCard(design, index) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.zIndex = 100 - index;
+            card.style.transform = `translateY(${index * 8}px) scale(${1 - index * 0.02})`;
+
+            card.innerHTML = `
+                <div class="card-image">
+                    <img src="${design.image}" alt="${design.title}">
+                </div>
+                <div class="card-info">
+                    <div class="design-title">${design.title}</div>
+                    <div class="design-meta">${design.productType || 'Design'} • ${design.createdAt}</div>
+                    <div class="design-desc">${design.description || 'No description provided'}</div>
+                </div>
+                <div class="card-actions">
+                    <button class="action-btn btn-reject" onclick="rejectDesign(${design.id})">❌ Reject</button>
+                    <button class="action-btn btn-comment" onclick="openCommentModal(${design.id}, '${design.title.replace(/'/g, "\\'")}')">💬 Comment</button>
+                    <button class="action-btn btn-approve" onclick="approveDesign(${design.id})">✅ Approve</button>
+                </div>
+            `;
+
+            if (index === 0) {
+                // Add touch/mouse handlers only to the top card
+                card.addEventListener('mousedown', startDrag);
+                card.addEventListener('touchstart', startDrag);
+                activeCard = card;
+            }
+
+            return card;
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            activeCard.classList.add('dragging');
+
+            if (e.type.includes('touch')) {
+                document.addEventListener('touchmove', onDrag);
+                document.addEventListener('touchend', endDrag);
+            } else {
+                document.addEventListener('mousemove', onDrag);
+                document.addEventListener('mouseup', endDrag);
+            }
+        }
+
+        function onDrag(e) {
+            if (!isDragging) return;
+
+            currentX = (e.type.includes('touch') ? e.touches[0].clientX : e.clientX) - startX;
+            const rotation = currentX / 10;
+            const opacity = Math.max(0.5, 1 - Math.abs(currentX) / 200);
+
+            activeCard.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
+            activeCard.style.opacity = opacity;
+        }
+
+        function endDrag(e) {
+            isDragging = false;
+            activeCard.classList.remove('dragging');
+
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('mouseup', endDrag);
+            document.removeEventListener('touchmove', onDrag);
+            document.removeEventListener('touchend', endDrag);
+
+            const threshold = 100;
+
+            if (currentX < -threshold) {
+                // Swiped left - reject
+                rejectDesign(designs[currentIndex].id);
+            } else if (currentX > threshold) {
+                // Swiped right - approve
+                approveDesign(designs[currentIndex].id);
+            } else {
+                // Reset
+                activeCard.style.transform = '';
+                activeCard.style.opacity = '';
+            }
+
+            currentX = 0;
+        }
+
+        function approveDesign(designId) {
+            approvedDesigns.push(designId);
+            updateStats();
+            nextDesign();
+        }
+
+        function rejectDesign(designId) {
+            rejectedDesigns.push(designId);
+            updateStats();
+            nextDesign();
+        }
+
+        function openCommentModal(designId, title) {
+            document.getElementById('designNameInput').value = title;
+            document.getElementById('commentInput').value = '';
+            document.getElementById('actionSelect').value = '';
+            document.getElementById('commentModal').dataset.designId = designId;
+            document.getElementById('commentModal').classList.add('show');
+        }
+
+        function closeCommentModal() {
+            document.getElementById('commentModal').classList.remove('show');
+        }
+
+        function saveComment() {
+            const designId = document.getElementById('commentModal').dataset.designId;
+            const comment = document.getElementById('commentInput').value;
+            const action = document.getElementById('actionSelect').value;
+
+            if (!comment.trim()) {
+                alert('Please add a comment');
+                return;
+            }
+
+            commentedDesigns.push({
+                id: designId,
+                comment: comment,
+                action: action,
+                timestamp: new Date().toLocaleString()
+            });
+
+            updateStats();
+            closeCommentModal();
+            nextDesign();
+        }
+
+        function nextDesign() {
+            currentIndex++;
+            renderCards();
+        }
+
+        function updateStats() {
+            document.getElementById('approveCount').textContent = approvedDesigns.length;
+            document.getElementById('rejectCount').textContent = rejectedDesigns.length;
+            document.getElementById('commentCount').textContent = commentedDesigns.length;
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('commentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCommentModal();
+            }
+        });
+
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+
+        // Initialize
+        loadDesigns();
+
+        // Refresh every 5 seconds to check for new designs
+        setInterval(loadDesigns, 5000);
+    </script>
+</body>
+</html>
