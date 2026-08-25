@@ -114,6 +114,9 @@ main{flex:1;position:relative;overflow:hidden;min-height:0}
 .cp{background:var(--ink);color:#fff}
 .restart{width:100%;margin-top:8px;padding:13px;border:1px solid var(--line);border-radius:12px;
   background:transparent;color:var(--mut);font-weight:600;font-size:12.5px;cursor:pointer}
+.nudge{margin-top:22px;padding:14px;border:1px solid #E6DCAE;background:#FBF6DF;border-radius:13px;
+  font-size:12.5px;line-height:1.55;color:#6B6033}
+.nudge b{display:block;margin-bottom:3px;color:#4E4620}
 
 /* ---------- note sheet ---------- */
 .modal{position:fixed;inset:0;background:rgba(21,21,15,.5);z-index:99;display:none;align-items:flex-end}
@@ -169,6 +172,17 @@ main{flex:1;position:relative;overflow:hidden;min-height:0}
       <div class="stat"><b id="gR">0</b><span>Revise</span></div>
       <div class="stat"><b id="gN">0</b><span>Passed on</span></div>
     </div>
+
+    <div id="sendAll" style="display:none">
+      <div class="nudge">
+        <b>Your decisions are only on this phone.</b>
+        Send them across so the team can act on them &mdash; you can send again any time.
+      </div>
+      <div class="send" style="margin-top:10px">
+        <button class="wa" id="allWa">Send everything on WhatsApp</button>
+        <button class="cp" id="allCp">Copy</button>
+      </div>
+    </div>
   </section>
 
   <!-- ============ deck ============ -->
@@ -176,6 +190,7 @@ main{flex:1;position:relative;overflow:hidden;min-height:0}
     <div class="deckhead">
       <button class="back" id="backBtn">&larr;</button>
       <div class="t"><h2 id="deckName"></h2><div class="mono" id="deckPos"></div></div>
+      <button class="back" id="finishBtn">Send&nbsp;&rarr;</button>
     </div>
     <div class="stage" id="stage"></div>
     <div class="acts">
@@ -211,7 +226,7 @@ main{flex:1;position:relative;overflow:hidden;min-height:0}
 <script>
 /* Designs live in Google Drive. lh3 serves them resized, so the phone pulls
    a few hundred KB instead of the multi-MB originals. */
-const DATA = {"nd":{"name":"National Day","tag":"ND series","items":[["01-cover","11LV3nPSmMVEp2RcJR_suLQy7pfxK9uas","Cover"],["02-ND Passport 1","16OY7fYeldoivnfnW_Jgyz-pFJsBfelIw","Passport 1"],["02-ND Passport 2","1NvB8vid-7hwL2vPs9Fdj3S_p-DJ4yeCX","Passport 2"],["02-ND Passport 3","1bMrv78RmwF4ngMStY9wiz9ti1DeeuttS","Passport 3"],["02-ND Passport 4","1YEOJRinikAKk9b8dJfLos3MY8GOqvywR","Passport 4"],["03-ND Pins 1","1siRA-ThKojNUqw4moyBG2QY1vJrVRcMn","Pins"],["04_ND Cups 1","1NBM3_WXcTOCzdwFRgwwTRq2at4u4TKcB","Cups"],["05-ND Mugs 1","13truw2roWj1_4vfkB85DB0GKrzRSriH9","Mugs"],["06-ND Phone case 1","15dIjNk6Cj77mOug1-FEMPp8TOov8ii3i","Phone case"],["07-ND Tees 1","1wN8zH4GM8AT1N4y2__1Jl661aWqc-5bQ","Tees"],["08-ND Caps 1","1vAaQIpC4VbNiv2SSjE4Ocx3qS3xIzyGP","Caps 1"],["08-ND Caps 2","10MVaWAGcKyO3v4FNhhgI7ylj-1WyHyVH","Caps 2"],["08-ND Caps 3","1V53xew1Vsldy531Aw8x7bF1WGXNXiLy9","Caps 3"],["09-ND Bracelet 1","1N5nadc64DsfEQdZn2kEFmePax8ecNdsq","Bracelet"]]},"ksa":{"name":"KSA","tag":"KSA series","items":[["KSA-02-Passport 1","1yvp4LGe3NrYwRbDQf6vrW5ktdf-KXRsx","Passport 1"],["KSA-02-Passport 2","1OiHVxOEsYnprqCX3cxHbjlw-85mwUfnC","Passport 2"],["KSA-02-Passport 3","17YVJCeOWkhqBkGbtidawpr5bJvRdbGej","Passport 3"],["KSA-02-Passport 4","1JPc1euqSin_uwGHtXf2zCFiR2NO92FSL","Passport 4"],["KSA-03-Pins 1","1dg5UzP1WJs43qA2gAOcpTbB0oRhsERIt","Pins 1"],["KSA-03-Pins 2","14oydOqsqvBMO7YINCSr8nBXLl9jlsFfj","Pins 2"],["KSA-04-Cup 1","1M64D43WvWkhdLg8Nd6zj6GJ9jeEcXCi-","Cup"],["KSA-05-Mug 1","1O67Y6KWtDkV_hh6KnWNHP835g8C4l5gs","Mug"],["KSA-06-Phone 1","1o7vPHAsjwO2iQ8hj-C9_n-P62ACuwWYM","Phone case"],["KSA-07-Tees 1","16Ua8k1wGjpm6Ypn1ANFXuxwzoXwoFgNQ","Tees"],["KSA-08-Caps 1","1FRWLroVSInq4Jm3dxj9GCunVwGwVNXw3","Caps 1"],["KSA-08-Caps 2","1kNbGl3KKmwwUaBARCP6piJkpcg0J_bfp","Caps 2"],["KSA-08-Caps 3","1-ukoriyntjIavUYE51dTR_1DyfPGXf74","Caps 3"],["KSA-09-Bracelet 1","1vIIKDw6rPr_SkX9AifQEOspJuLv6hkhE","Bracelet"]]}};
+const DATA = {"nd":{"name":"National Day","tag":"ND series","items":[["02-ND Passport 1","16OY7fYeldoivnfnW_Jgyz-pFJsBfelIw","Passport 1"],["02-ND Passport 2","1NvB8vid-7hwL2vPs9Fdj3S_p-DJ4yeCX","Passport 2"],["02-ND Passport 3","1bMrv78RmwF4ngMStY9wiz9ti1DeeuttS","Passport 3"],["02-ND Passport 4","1YEOJRinikAKk9b8dJfLos3MY8GOqvywR","Passport 4"],["03-ND Pins 1","1siRA-ThKojNUqw4moyBG2QY1vJrVRcMn","Pins"],["04_ND Cups 1","1NBM3_WXcTOCzdwFRgwwTRq2at4u4TKcB","Cups"],["05-ND Mugs 1","13truw2roWj1_4vfkB85DB0GKrzRSriH9","Mugs"],["06-ND Phone case 1","15dIjNk6Cj77mOug1-FEMPp8TOov8ii3i","Phone case"],["07-ND Tees 1","1wN8zH4GM8AT1N4y2__1Jl661aWqc-5bQ","Tees"],["08-ND Caps 1","1vAaQIpC4VbNiv2SSjE4Ocx3qS3xIzyGP","Caps 1"],["08-ND Caps 2","10MVaWAGcKyO3v4FNhhgI7ylj-1WyHyVH","Caps 2"],["08-ND Caps 3","1V53xew1Vsldy531Aw8x7bF1WGXNXiLy9","Caps 3"],["09-ND Bracelet 1","1N5nadc64DsfEQdZn2kEFmePax8ecNdsq","Bracelet"]]},"ksa":{"name":"KSA","tag":"KSA series","items":[["KSA-02-Passport 1","1yvp4LGe3NrYwRbDQf6vrW5ktdf-KXRsx","Passport 1"],["KSA-02-Passport 2","1OiHVxOEsYnprqCX3cxHbjlw-85mwUfnC","Passport 2"],["KSA-02-Passport 3","17YVJCeOWkhqBkGbtidawpr5bJvRdbGej","Passport 3"],["KSA-02-Passport 4","1JPc1euqSin_uwGHtXf2zCFiR2NO92FSL","Passport 4"],["KSA-03-Pins 1","1dg5UzP1WJs43qA2gAOcpTbB0oRhsERIt","Pins 1"],["KSA-03-Pins 2","14oydOqsqvBMO7YINCSr8nBXLl9jlsFfj","Pins 2"],["KSA-04-Cup 1","1M64D43WvWkhdLg8Nd6zj6GJ9jeEcXCi-","Cup"],["KSA-05-Mug 1","1O67Y6KWtDkV_hh6KnWNHP835g8C4l5gs","Mug"],["KSA-06-Phone 1","1o7vPHAsjwO2iQ8hj-C9_n-P62ACuwWYM","Phone case"],["KSA-07-Tees 1","16Ua8k1wGjpm6Ypn1ANFXuxwzoXwoFgNQ","Tees"],["KSA-08-Caps 1","1FRWLroVSInq4Jm3dxj9GCunVwGwVNXw3","Caps 1"],["KSA-08-Caps 2","1kNbGl3KKmwwUaBARCP6piJkpcg0J_bfp","Caps 2"],["KSA-08-Caps 3","1-ukoriyntjIavUYE51dTR_1DyfPGXf74","Caps 3"],["KSA-09-Bracelet 1","1vIIKDw6rPr_SkX9AifQEOspJuLv6hkhE","Bracelet"]]}};
 const IMG   = (id,w) => 'https://lh3.googleusercontent.com/d/' + id + '=w' + w;
 const STORE = 'webook_review_v2';
 
@@ -264,6 +279,33 @@ function renderHome(){
 
   $('totalCount').textContent = total + ' designs';
   $('gY').textContent = gY; $('gR').textContent = gR; $('gN').textContent = gN;
+
+  const any = gY + gR + gN;
+  $('sendAll').style.display = any ? 'block' : 'none';
+  if(any){
+    const text = combinedText();
+    $('allWa').onclick = () => open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    $('allCp').onclick = e => navigator.clipboard.writeText(text)
+      .then(() => { e.target.textContent = 'Copied'; setTimeout(() => e.target.textContent = 'Copy', 1600); })
+      .catch(() => {});
+  }
+}
+
+/* One message covering every collection that has been touched. */
+function combinedText(){
+  let t = 'Design review — ' + new Date().toLocaleDateString() + '\n';
+  for(const [key,col] of Object.entries(DATA)){
+    const all = col.items.map(it => Object.assign({t:it[2]}, decisions[it[1]] || {})).filter(d => d.v);
+    if(!all.length) continue;
+    t += '\n== ' + col.name + ' (' + all.length + ' of ' + col.items.length + ' reviewed) ==\n';
+    const yes = all.filter(d => d.v === 'approved');
+    const rev = all.filter(d => d.v === 'commented');
+    const no  = all.filter(d => d.v === 'rejected');
+    if(yes.length) t += '\nAPPROVED\n' + yes.map(d => '- ' + d.t).join('\n') + '\n';
+    if(rev.length) t += '\nNEEDS WORK\n' + rev.map(d => '- ' + d.t + ' (' + d.act + ') — ' + d.note).join('\n') + '\n';
+    if(no.length)  t += '\nPASSED ON\n' + no.map(d => '- ' + d.t + (d.note ? ' — ' + d.note : '')).join('\n') + '\n';
+  }
+  return t.trim();
 }
 
 /* ---------------- deck ---------------- */
@@ -377,9 +419,12 @@ function renderDone(){
       (d.note ? '<div class="c">'+esc(d.act ? d.act+' — ' : '')+esc(d.note)+'</div>' : '')+
       '</div></div>').join('') + '</div>';
 
+  const partial = all.length < items.length;
   $('done').innerHTML =
-    '<div class="mono">'+DATA[colKey].name+' complete</div>'+
-    '<h1 class="serif">All '+items.length+' seen.<em>Here it is.</em></h1>'+
+    '<div class="mono">'+DATA[colKey].name+(partial ? ' so far' : ' complete')+'</div>'+
+    (partial
+      ? '<h1 class="serif">'+all.length+' of '+items.length+'.<em>Send what you have.</em></h1>'
+      : '<h1 class="serif">All '+items.length+' seen.<em>Here it is.</em></h1>')+
     '<p class="lead">'+yes.length+' approved &middot; '+rev.length+' to revise &middot; '+no.length+' passed on</p>'+
     grp('Approved', yes) + grp('Needs work', rev) + grp('Passed on', no) +
     '<div class="send"><button class="wa" id="bWa">Send on WhatsApp</button>'+
@@ -422,6 +467,7 @@ $('mSave').onclick = () => {
 $('modal').onclick = e => { if(e.target.id === 'modal') closeNote(); };
 $('backBtn').onclick = renderHome;
 $('homeBtn').onclick = renderHome;
+$('finishBtn').onclick = () => { if(items.length) renderDone(); };
 
 renderHome();
 </script>
