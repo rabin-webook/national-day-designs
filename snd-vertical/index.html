@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#F2F0EA">
+<title>Saudi National Day — Vertical</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#F2F0EA; --card:#FBFAF8; --ink:#15150F; --mut:#8B897F;
+  --line:#E2DFD5; --lime:#D9F94C; --ok:#2F7D4F; --no:#B4402F; --rev:#B8792A;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  text-transform:uppercase;letter-spacing:.13em;font-size:10.5px;color:var(--mut)}
+.serif{font-family:Georgia,'Times New Roman',serif}
+
+/* ---------- chrome ---------- */
+header{display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 18px 14px;
+  border-bottom:1px solid var(--line);background:var(--bg);flex:none}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--lime);
+  border:1.5px solid var(--ink);flex:none}
+header .brand{flex:1;min-width:0}
+.iconbtn{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--card);
+  font-size:15px;cursor:pointer;flex:none;color:var(--ink)}
+.iconbtn:active{transform:scale(.92)}
+
+main{flex:1;position:relative;overflow:hidden;min-height:0}
+.view{position:absolute;inset:0;display:none;flex-direction:column}
+.view.on{display:flex}
+
+/* ---------- workspace ---------- */
+#home{overflow-y:auto;padding:26px 18px calc(30px + env(safe-area-inset-bottom))}
+.hero{margin-bottom:30px}
+.hero h1{font-size:clamp(34px,10vw,46px);line-height:.98;letter-spacing:-.02em;font-weight:400;margin:12px 0 0}
+.hero h1 em{font-style:italic;display:block}
+.hero p{font-size:14px;color:#5F5D55;margin-top:14px;line-height:1.55;max-width:34ch}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 14px}
+.proj{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.proj .top{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:ui-monospace,Menlo,monospace;
+  font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut)}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--mut);font-style:normal}
+.pill.live i{background:var(--lime);box-shadow:0 0 0 2px rgba(217,249,76,.35)}
+.pill.done i{background:var(--ok)}
+.proj h2{font-size:25px;font-weight:400;letter-spacing:-.015em;line-height:1.1}
+.thumbs{display:flex;gap:6px;margin:14px 0 4px}
+.thumbs div{flex:1;aspect-ratio:9/16;border-radius:7px;overflow:hidden;background:#E8E5DC}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin:14px 0 8px}
+.bar span{display:block;height:100%;background:var(--lime);border-radius:2px;transition:width .4s}
+.proj .foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;
+  padding-top:12px;border-top:1px solid var(--line)}
+.open{background:var(--ink);color:#fff;border:none;border-radius:9px;padding:11px 18px;
+  font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.open:active{transform:scale(.95)}
+.open.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.glance{display:flex;gap:9px;margin-top:22px}
+.stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 12px}
+.stat b{display:block;font-size:26px;font-weight:400;font-family:Georgia,serif;line-height:1}
+.stat span{font-size:10.5px;color:var(--mut);font-family:ui-monospace,Menlo,monospace;
+  text-transform:uppercase;letter-spacing:.09em;margin-top:5px;display:block}
+
+/* ---------- review deck ---------- */
+#deck{padding:14px 16px 0}
+.deckhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex:none}
+.deckhead .back{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:7px 11px;font-size:12px;cursor:pointer;color:var(--ink)}
+.deckhead .t{flex:1;min-width:0}
+.deckhead h2{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage{flex:1;position:relative;min-height:0;margin-bottom:10px}
+.card{position:absolute;inset:0;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 8px 28px rgba(20,20,15,.10);touch-action:none;will-change:transform}
+.card .shot{flex:1;min-height:0;background:#EAE7DE;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;touch-action:none}
+.card .shot img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;
+  transform-origin:center center;will-change:transform}
+.zbadge{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:6;
+  background:rgba(21,21,15,.8);color:#fff;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;
+  letter-spacing:.09em;text-transform:uppercase;padding:5px 6px 5px 12px;border-radius:20px;
+  display:none;align-items:center;gap:9px}
+.zbadge.on{display:inline-flex}
+.zreset{background:var(--lime);color:#1D2A06;border:none;border-radius:13px;padding:4px 10px;
+  font:inherit;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+.card .ph{position:absolute;font-size:11px;color:#A9A79E;font-family:ui-monospace,Menlo,monospace}
+.card .cap{padding:12px 14px;border-top:1px solid var(--line);display:flex;
+  align-items:center;justify-content:space-between;gap:10px;flex:none}
+.card .cap h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.stamp{position:absolute;top:18px;font-family:ui-monospace,Menlo,monospace;font-size:15px;
+  font-weight:700;letter-spacing:.1em;padding:7px 13px;border:2.5px solid;border-radius:8px;
+  opacity:0;transition:opacity .1s;pointer-events:none;background:rgba(251,250,248,.92)}
+.stamp.y{right:16px;color:var(--ok);border-color:var(--ok);transform:rotate(11deg)}
+.stamp.n{left:16px;color:var(--no);border-color:var(--no);transform:rotate(-11deg)}
+.acts{display:flex;gap:8px;padding-bottom:calc(12px + env(safe-area-inset-bottom));flex:none}
+.acts button{flex:1;padding:14px 6px;border:none;border-radius:12px;font-size:13.5px;
+  font-weight:650;cursor:pointer;transition:transform .12s}
+.acts button:active{transform:scale(.95)}
+.bNo{background:#F6DED9;color:var(--no);border:1px solid #EFCCC4!important}
+.bRev{background:#F7E9D2;color:var(--rev);border:1px solid #EEDCBD!important}
+.bYes{background:var(--lime);color:#1D2A06;border:1px solid #C9EA35!important}
+
+/* ---------- summary ---------- */
+#done{overflow-y:auto;padding:26px 18px calc(30px + env(safe-area-inset-bottom))}
+#done h1{font-size:32px;font-weight:400;letter-spacing:-.02em;line-height:1.05;margin:10px 0 6px}
+#done h1 em{font-style:italic}
+.lead{font-size:13.5px;color:#5F5D55;margin-bottom:22px}
+.grp{margin-bottom:20px}
+.grp>.mono{margin-bottom:9px;display:block}
+.row{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;background:var(--card);
+  border:1px solid var(--line);border-radius:11px;margin-bottom:7px}
+.row .sw{width:34px;height:34px;border-radius:7px;object-fit:cover;flex:none;background:#E8E5DC}
+.row .n{font-size:13.5px;font-weight:600}
+.row .c{font-size:12px;color:#6C6A61;margin-top:3px;line-height:1.45;white-space:pre-wrap}
+.send{display:flex;gap:8px;margin-top:20px}
+.send button{flex:1;padding:14px;border:none;border-radius:12px;font-weight:650;font-size:13.5px;cursor:pointer}
+.wa{background:#25D366;color:#fff}
+.cp{background:var(--ink);color:#fff}
+.restart{width:100%;margin-top:8px;padding:13px;border:1px solid var(--line);border-radius:12px;
+  background:transparent;color:var(--mut);font-weight:600;font-size:12.5px;cursor:pointer}
+.nudge{margin-top:22px;padding:14px;border:1px solid #E6DCAE;background:#FBF6DF;border-radius:13px;
+  font-size:12.5px;line-height:1.55;color:#6B6033}
+.nudge b{display:block;margin-bottom:3px;color:#4E4620}
+
+/* ---------- note sheet ---------- */
+.modal{position:fixed;inset:0;background:rgba(21,21,15,.5);z-index:99;display:none;align-items:flex-end}
+.modal.on{display:flex}
+.sheet{background:var(--card);width:100%;border-radius:20px 20px 0 0;
+  padding:22px 18px calc(22px + env(safe-area-inset-bottom));max-height:90vh;overflow-y:auto}
+.sheet h3{font-size:19px;font-weight:400;font-family:Georgia,serif;margin-bottom:16px}
+.sheet label{display:block;margin-bottom:7px}
+.sheet textarea,.sheet select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;
+  font-size:16px;font-family:inherit;background:#fff;color:var(--ink);margin-bottom:15px;
+  -webkit-user-select:text;user-select:text}
+.sheet textarea{min-height:104px;resize:vertical}
+.sheet textarea:focus,.sheet select:focus{outline:none;border-color:var(--ink)}
+.sheet .btns{display:flex;gap:9px}
+.sheet .btns button{flex:1;padding:14px;border:none;border-radius:12px;font-weight:650;font-size:14px;cursor:pointer}
+.cancel{background:#EDEAE1;color:#55534B}
+.save{background:var(--ink);color:#fff}
+
+@media(min-width:720px){
+  #home,#done{max-width:760px;margin:0 auto;width:100%}
+  .stage{max-width:440px;margin:0 auto;width:100%}
+  .acts{max-width:440px;margin:0 auto;width:100%}
+  .projects{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .proj{margin-bottom:0}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="dot"></span>
+  <div class="brand">
+    <div class="mono">Webook / Review</div>
+  </div>
+  <button class="iconbtn" id="homeBtn" title="All collections">&#9633;</button>
+</header>
+
+<main>
+  <!-- ============ workspace ============ -->
+  <section class="view on" id="home">
+    <div class="hero">
+      <div class="mono">Webook x Saudi National Day</div>
+      <h1 class="serif">Two routes.<em>One direction.</em></h1>
+      <p>Two complete brand routes for the vertical campaign. Swipe through each and mark what stays. Your notes come back as one summary you can send straight to the team.</p>
+    </div>
+
+    <div class="sec"><span class="mono">Collections</span><span class="mono" id="totalCount"></span></div>
+    <div class="projects" id="projects"></div>
+
+    <div class="sec" style="margin-top:26px"><span class="mono">Overall</span></div>
+    <div class="glance">
+      <div class="stat"><b id="gY">0</b><span>Approved</span></div>
+      <div class="stat"><b id="gR">0</b><span>Revise</span></div>
+      <div class="stat"><b id="gN">0</b><span>Passed on</span></div>
+    </div>
+
+    <div id="sendAll" style="display:none">
+      <div class="nudge">
+        <b>Your decisions are only on this phone.</b>
+        Send them across so the team can act on them &mdash; you can send again any time.
+      </div>
+      <div class="send" style="margin-top:10px">
+        <button class="wa" id="allWa">Send everything on WhatsApp</button>
+        <button class="cp" id="allCp">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ deck ============ -->
+  <section class="view" id="deck">
+    <div class="deckhead">
+      <button class="back" id="backBtn">&larr;</button>
+      <div class="t"><h2 id="deckName"></h2><div class="mono" id="deckPos"></div></div>
+      <button class="back" id="finishBtn">Send&nbsp;&rarr;</button>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="acts">
+      <button class="bNo"  id="aNo">Pass</button>
+      <button class="bRev" id="aRev">Note</button>
+      <button class="bYes" id="aYes">Approve</button>
+    </div>
+  </section>
+
+  <!-- ============ summary ============ -->
+  <section class="view" id="done"></section>
+</main>
+
+<div class="modal" id="modal">
+  <div class="sheet">
+    <h3 id="mTitle">Add a note</h3>
+    <label class="mono">What needs to change</label>
+    <textarea id="mText" placeholder="Colour, sizing, placement&hellip;"></textarea>
+    <label class="mono">Outcome</label>
+    <select id="mAct">
+      <option>Needs revision</option>
+      <option>Approve with changes</option>
+      <option>Discuss on call</option>
+      <option>Pass on this one</option>
+    </select>
+    <div class="btns">
+      <button class="cancel" id="mCancel">Cancel</button>
+      <button class="save"   id="mSave">Save &amp; next</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Designs live in Google Drive. lh3 serves them resized, so the phone pulls
+   a few hundred KB instead of the multi-MB originals. */
+const DATA = {"route01":{"name":"Route 01","tag":"Route 01","items":[["02-page-2.jpg","route01-002","Key Visual"],["03-page-3.jpg","route01-003","App Icon"],["04-page-4.jpg","route01-004","Logo Lockups"],["05-page-5.jpg","route01-005","Social Greeting"],["06-page-6.jpg","route01-006","Social Carousel"],["07-page-7.jpg","route01-007","Web Banners"],["08-page-8.jpg","route01-008","Roll Up & Photo Frame"],["09-page-9.jpg","route01-009","Photo Frame In Use"]]},"route02":{"name":"Route 02","tag":"Route 02","items":[["02-page-2.jpg","r2-route02-002","Key Visual"],["03-page-3.jpg","r2-route02-003","App Icon"],["04-page-4.jpg","r2-route02-004","Social Greeting"],["05-page-5.jpg","r2-route02-005","Social Carousel"],["06-page-6.jpg","r2-route02-006","Web Banners"],["07-page-7.jpg","r2-route02-007","Roll Up & Photo Corner"]]}};
+const SRC = {"route01-002":["review_files/route01-002.jpg","review_files/route01-002-t.jpg"],"route01-003":["review_files/route01-003.jpg","review_files/route01-003-t.jpg"],"route01-004":["review_files/route01-004.jpg","review_files/route01-004-t.jpg"],"route01-005":["review_files/route01-005.jpg","review_files/route01-005-t.jpg"],"route01-006":["review_files/route01-006.jpg","review_files/route01-006-t.jpg"],"route01-007":["review_files/route01-007.jpg","review_files/route01-007-t.jpg"],"route01-008":["review_files/route01-008.jpg","review_files/route01-008-t.jpg"],"route01-009":["review_files/route01-009.jpg","review_files/route01-009-t.jpg"],"r2-route02-002":["review_files/r2-route02-002.jpg","review_files/r2-route02-002-t.jpg"],"r2-route02-003":["review_files/r2-route02-003.jpg","review_files/r2-route02-003-t.jpg"],"r2-route02-004":["review_files/r2-route02-004.jpg","review_files/r2-route02-004-t.jpg"],"r2-route02-005":["review_files/r2-route02-005.jpg","review_files/r2-route02-005-t.jpg"],"r2-route02-006":["review_files/r2-route02-006.jpg","review_files/r2-route02-006-t.jpg"],"r2-route02-007":["review_files/r2-route02-007.jpg","review_files/r2-route02-007-t.jpg"]};
+/* [full, thumb] when a small variant exists; the template asks for the
+   width it needs, so hand back the cheap file below ~600px. */
+const IMG = (id,w) => { const s = SRC[id];
+  return Array.isArray(s) ? (w && w <= 600 ? s[1] : s[0]) : s; };
+const STORE = 'webook_review_snd-vertical';
+
+let decisions = load(), colKey = null, items = [], idx = 0;
+let card = null, x0 = 0, dx = 0, dragging = false;
+
+function load(){ try{ return JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(decisions)); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+function view(id){ ['home','deck','done'].forEach(v => $(v).classList.toggle('on', v===id)); }
+
+/* ---------------- workspace ---------------- */
+function renderHome(){
+  view('home');
+  const wrap = $('projects'); wrap.innerHTML = '';
+  let total = 0, gY = 0, gR = 0, gN = 0;
+
+  for(const [key,col] of Object.entries(DATA)){
+    total += col.items.length;
+    const done = col.items.filter(it => decisions[it[1]]).length;
+    col.items.forEach(it => { const d = decisions[it[1]]; if(!d) return;
+      if(d.v==='approved') gY++; else if(d.v==='rejected') gN++; else gR++; });
+
+    const pct = Math.round(done / col.items.length * 100);
+    const state = done === 0 ? '' : (done === col.items.length ? 'done' : 'live');
+    const label = done === 0 ? 'Not started' : (done === col.items.length ? 'Reviewed' : 'In review');
+
+    const el = document.createElement('div');
+    el.className = 'proj';
+    el.innerHTML =
+      '<div class="top"><span class="pill '+state+'"><i></i>'+label+'</span></div>'+
+      '<h2 class="serif"></h2>'+
+      '<div class="thumbs"></div>'+
+      '<div class="bar"><span style="width:'+pct+'%"></span></div>'+
+      '<div class="mono">'+done+' of '+col.items.length+' reviewed</div>'+
+      '<div class="foot"><span class="mono">'+col.tag+'</span>'+
+      '<button class="open'+(done?' ghost':'')+'">'+(done && done<col.items.length ? 'Resume' : done ? 'Review again' : 'Start')+' &rarr;</button></div>';
+    el.querySelector('h2').textContent = col.name;
+    const th = el.querySelector('.thumbs');
+    col.items.slice(0,4).forEach(it => {
+      const d = document.createElement('div');
+      const im = document.createElement('img');
+      im.loading = 'lazy'; im.src = IMG(it[1], 200); im.alt = '';
+      d.appendChild(im); th.appendChild(d);
+    });
+    el.querySelector('.open').onclick = () => openCol(key);
+    wrap.appendChild(el);
+  }
+
+  $('totalCount').textContent = total + ' designs';
+  $('gY').textContent = gY; $('gR').textContent = gR; $('gN').textContent = gN;
+
+  const any = gY + gR + gN;
+  $('sendAll').style.display = any ? 'block' : 'none';
+  if(any){
+    const text = combinedText();
+    $('allWa').onclick = () => open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    $('allCp').onclick = e => navigator.clipboard.writeText(text)
+      .then(() => { e.target.textContent = 'Copied'; setTimeout(() => e.target.textContent = 'Copy', 1600); })
+      .catch(() => {});
+  }
+}
+
+/* One message covering every collection that has been touched. */
+function combinedText(){
+  let t = 'Design review — ' + new Date().toLocaleDateString() + '\n';
+  for(const [key,col] of Object.entries(DATA)){
+    const all = col.items.map(it => Object.assign({t:it[2]}, decisions[it[1]] || {})).filter(d => d.v);
+    if(!all.length) continue;
+    t += '\n== ' + col.name + ' (' + all.length + ' of ' + col.items.length + ' reviewed) ==\n';
+    const yes = all.filter(d => d.v === 'approved');
+    const rev = all.filter(d => d.v === 'commented');
+    const no  = all.filter(d => d.v === 'rejected');
+    if(yes.length) t += '\nAPPROVED\n' + yes.map(d => '- ' + d.t).join('\n') + '\n';
+    if(rev.length) t += '\nNEEDS WORK\n' + rev.map(d => '- ' + d.t + ' (' + d.act + ') — ' + d.note).join('\n') + '\n';
+    if(no.length)  t += '\nPASSED ON\n' + no.map(d => '- ' + d.t + (d.note ? ' — ' + d.note : '')).join('\n') + '\n';
+  }
+  return t.trim();
+}
+
+/* ---------------- deck ---------------- */
+function openCol(key){
+  colKey = key;
+  items = DATA[key].items;
+  idx = items.findIndex(it => !decisions[it[1]]);
+  if(idx < 0) idx = items.length;
+  $('deckName').textContent = DATA[key].name;
+  view('deck');
+  renderDeck();
+}
+
+function renderDeck(){
+  const stage = $('stage'); stage.innerHTML = '';
+  if(idx >= items.length){ return renderDone(); }
+  $('deckPos').textContent = (idx+1) + ' of ' + items.length + '  ·  pinch or double-tap to zoom';
+
+  for(let k = Math.min(2, items.length - idx - 1); k >= 0; k--){
+    const it = items[idx+k];
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.style.zIndex = 10 - k;
+    el.style.transform = 'translateY('+(k*6)+'px) scale('+(1-k*.022)+')';
+    el.innerHTML =
+      '<div class="shot"><span class="ph">Loading&hellip;</span>'+
+        '<img alt="" onload="this.previousElementSibling.remove()" '+
+             'onerror="this.previousElementSibling.textContent=\'Image unavailable\'">'+
+         '<div class="zbadge"><span>Zoomed</span><button class="zreset">Reset</button></div>'+
+      '</div>'+
+      '<div class="stamp y">KEEP</div><div class="stamp n">PASS</div>'+
+      '<div class="cap"><h3></h3><span class="mono"></span></div>';
+    el.querySelector('img').src = IMG(it[1], 1400);
+    el.querySelector('h3').textContent = it[2];
+    el.querySelector('.cap .mono').textContent = DATA[colKey].tag;
+    stage.appendChild(el);
+    if(k === 0){ card = el; bindDrag(el); }
+  }
+}
+
+/* Two fingers always mean zoom, never swipe. One finger pans while zoomed
+   and swipes at rest, so the two gestures can never fight each other. */
+let zoom = {s:1, tx:0, ty:0};
+let imgEl = null, badgeEl = null;
+let pinching = false, panning = false, pd0 = 0, ps0 = 1, ppx = 0, ppy = 0, lastTap = 0;
+
+function dist(t){ return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY); }
+function zoomed(){ return zoom.s > 1.01; }
+
+function applyZoom(anim){
+  if(!imgEl) return;
+  imgEl.style.transition = anim ? 'transform .2s ease-out' : 'none';
+  imgEl.style.transform  = 'translate('+zoom.tx+'px,'+zoom.ty+'px) scale('+zoom.s+')';
+  if(badgeEl) badgeEl.classList.toggle('on', zoomed());
+}
+function clampPan(){
+  if(!imgEl) return;
+  const mx = (zoom.s - 1) * imgEl.clientWidth  / 2;
+  const my = (zoom.s - 1) * imgEl.clientHeight / 2;
+  zoom.tx = Math.max(-mx, Math.min(mx, zoom.tx));
+  zoom.ty = Math.max(-my, Math.min(my, zoom.ty));
+}
+function resetZoom(anim){ zoom = {s:1, tx:0, ty:0}; applyZoom(anim); }
+function toggleZoom(){ zoom.s = zoomed() ? 1 : 2.4; zoom.tx = 0; zoom.ty = 0; applyZoom(true); }
+
+function bindDrag(el){
+  imgEl   = el.querySelector('.shot img');
+  badgeEl = el.querySelector('.zbadge');
+  resetZoom(false);
+  el.addEventListener('touchstart', tStart, {passive:false});
+  el.addEventListener('mousedown', down);
+  const shot = el.querySelector('.shot');
+  shot.addEventListener('wheel', onWheel, {passive:false});
+  shot.addEventListener('dblclick', e => { e.preventDefault(); toggleZoom(); });
+  el.querySelector('.zreset').onclick = e => { e.stopPropagation(); resetZoom(true); };
+}
+
+function onWheel(e){
+  e.preventDefault();
+  zoom.s = Math.max(1, Math.min(5, zoom.s * (e.deltaY < 0 ? 1.16 : 0.86)));
+  if(!zoomed()){ zoom.tx = 0; zoom.ty = 0; }
+  clampPan(); applyZoom(false);
+}
+
+function tStart(e){
+  if(e.touches.length === 2){
+    if(dragging){                       // a swipe had begun - abandon it
+      dragging = false;
+      card.style.transition = 'transform .2s ease-out';
+      card.style.transform = '';
+      card.querySelectorAll('.stamp').forEach(s => s.style.opacity = 0);
+    }
+    pinching = true; panning = false;
+    pd0 = dist(e.touches); ps0 = zoom.s;
+    e.preventDefault();
+    document.addEventListener('touchmove', tMove, {passive:false});
+    document.addEventListener('touchend', tEnd);
+    return;
+  }
+  if(e.touches.length !== 1) return;
+
+  const now = Date.now();
+  if(now - lastTap < 300){ lastTap = 0; e.preventDefault(); toggleZoom(); return; }
+  lastTap = now;
+
+  if(zoomed()){
+    panning = true;
+    ppx = e.touches[0].clientX - zoom.tx;
+    ppy = e.touches[0].clientY - zoom.ty;
+    e.preventDefault();
+    document.addEventListener('touchmove', tMove, {passive:false});
+    document.addEventListener('touchend', tEnd);
+    return;
+  }
+  down(e);
+}
+function tMove(e){
+  if(pinching && e.touches.length === 2){
+    e.preventDefault();
+    zoom.s = Math.max(1, Math.min(5, ps0 * dist(e.touches) / pd0));
+    if(!zoomed()){ zoom.tx = 0; zoom.ty = 0; }
+    clampPan(); applyZoom(false);
+    return;
+  }
+  if(panning && e.touches.length === 1){
+    e.preventDefault();
+    zoom.tx = e.touches[0].clientX - ppx;
+    zoom.ty = e.touches[0].clientY - ppy;
+    clampPan(); applyZoom(false);
+  }
+}
+function tEnd(e){
+  if(e.touches && e.touches.length > 0) return;
+  if(pinching){ pinching = false; if(!zoomed()) resetZoom(true); }
+  panning = false;
+  document.removeEventListener('touchmove', tMove);
+  document.removeEventListener('touchend', tEnd);
+}
+
+function down(e){
+  if(!e.touches && zoomed()){                 // desktop: drag pans while zoomed
+    panning = true;
+    ppx = e.clientX - zoom.tx; ppy = e.clientY - zoom.ty;
+    document.addEventListener('mousemove', mPan);
+    document.addEventListener('mouseup', mPanEnd);
+    e.preventDefault();
+    return;
+  }
+  if(zoomed()) return;                        // never swipe a zoomed card
+  dragging = true; dx = 0;
+  x0 = e.touches ? e.touches[0].clientX : e.clientX;
+  card.style.transition = 'none';
+  document.addEventListener('touchmove', move, {passive:false});
+  document.addEventListener('touchend', up);
+  document.addEventListener('mousemove', move);
+  document.addEventListener('mouseup', up);
+}
+function mPan(e){ zoom.tx = e.clientX - ppx; zoom.ty = e.clientY - ppy; clampPan(); applyZoom(false); }
+function mPanEnd(){ panning = false;
+  document.removeEventListener('mousemove', mPan);
+  document.removeEventListener('mouseup', mPanEnd); }
+function move(e){
+  if(!dragging || zoomed()) return;
+  dx = (e.touches ? e.touches[0].clientX : e.clientX) - x0;
+  if(e.cancelable && Math.abs(dx) > 8) e.preventDefault();
+  card.style.transform = 'translateX('+dx+'px) rotate('+(dx/20)+'deg)';
+  card.querySelector('.stamp.y').style.opacity = dx >  25 ? Math.min(1,  dx/110) : 0;
+  card.querySelector('.stamp.n').style.opacity = dx < -25 ? Math.min(1, -dx/110) : 0;
+}
+function up(){
+  if(!dragging) return;
+  dragging = false;
+  document.removeEventListener('touchmove', move);
+  document.removeEventListener('touchend', up);
+  document.removeEventListener('mousemove', move);
+  document.removeEventListener('mouseup', up);
+  card.style.transition = 'transform .3s ease-out, opacity .3s ease-out';
+  if(dx > 105)       fly( 1, 'approved');
+  else if(dx < -105) fly(-1, 'rejected');
+  else { card.style.transform = '';
+         card.querySelectorAll('.stamp').forEach(s => s.style.opacity = 0); }
+  dx = 0;
+}
+function fly(dir, verdict){
+  card.style.transform = 'translateX('+(dir*innerWidth*1.25)+'px) rotate('+(dir*24)+'deg)';
+  card.style.opacity = 0;
+  setTimeout(() => decide(verdict), 200);
+}
+
+function decide(v, note, act){
+  const it = items[idx];
+  if(!it) return;
+  decisions[it[1]] = {v:v, t:it[2], c:colKey, note:note||'', act:act||''};
+  save(); idx++; renderDeck();
+}
+
+/* ---------------- note sheet ---------------- */
+function openNote(){
+  if(idx >= items.length) return;
+  $('mTitle').textContent = items[idx][2];
+  $('mText').value = '';
+  $('modal').classList.add('on');
+  setTimeout(() => $('mText').focus(), 130);
+}
+function closeNote(){ $('modal').classList.remove('on'); }
+
+/* ---------------- summary ---------------- */
+function renderDone(){
+  view('done');
+  const all = items.map(it => Object.assign({t:it[2], id:it[1]}, decisions[it[1]] || {})).filter(d => d.v);
+  const yes  = all.filter(d => d.v === 'approved');
+  const rev  = all.filter(d => d.v === 'commented');
+  const no   = all.filter(d => d.v === 'rejected');
+
+  const grp = (label, arr) => !arr.length ? '' :
+    '<div class="grp"><span class="mono">'+label+' &middot; '+arr.length+'</span>' +
+    arr.map(d =>
+      '<div class="row"><img class="sw" loading="lazy" src="'+IMG(d.id,120)+'" alt="">'+
+      '<div><div class="n">'+esc(d.t)+'</div>'+
+      (d.note ? '<div class="c">'+esc(d.act ? d.act+' — ' : '')+esc(d.note)+'</div>' : '')+
+      '</div></div>').join('') + '</div>';
+
+  const partial = all.length < items.length;
+  $('done').innerHTML =
+    '<div class="mono">'+DATA[colKey].name+(partial ? ' so far' : ' complete')+'</div>'+
+    (partial
+      ? '<h1 class="serif">'+all.length+' of '+items.length+'.<em>Send what you have.</em></h1>'
+      : '<h1 class="serif">All '+items.length+' seen.<em>Here it is.</em></h1>')+
+    '<p class="lead">'+yes.length+' approved &middot; '+rev.length+' to revise &middot; '+no.length+' passed on</p>'+
+    grp('Approved', yes) + grp('Needs work', rev) + grp('Passed on', no) +
+    '<div class="send"><button class="wa" id="bWa">Send on WhatsApp</button>'+
+    '<button class="cp" id="bCp">Copy</button></div>'+
+    '<button class="restart" id="bAgain">Review this collection again</button>';
+
+  const text = summaryText(DATA[colKey].name, yes, rev, no);
+  $('bWa').onclick = () => open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  $('bCp').onclick = e => navigator.clipboard.writeText(text)
+    .then(() => { e.target.textContent = 'Copied'; setTimeout(() => e.target.textContent = 'Copy', 1600); })
+    .catch(() => {});
+  $('bAgain').onclick = () => {
+    items.forEach(it => delete decisions[it[1]]);
+    save(); idx = 0; view('deck'); renderDeck();
+  };
+}
+
+function summaryText(name, yes, rev, no){
+  let t = name + ' — design review\n' + new Date().toLocaleDateString() + '\n';
+  if(yes.length) t += '\nAPPROVED\n' + yes.map(d => '- ' + d.t).join('\n') + '\n';
+  if(rev.length) t += '\nNEEDS WORK\n' + rev.map(d => '- ' + d.t + ' (' + d.act + ') — ' + d.note).join('\n') + '\n';
+  if(no.length)  t += '\nPASSED ON\n' + no.map(d => '- ' + d.t + (d.note ? ' — ' + d.note : '')).join('\n') + '\n';
+  return t.trim();
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---------------- wiring ---------------- */
+$('aYes').onclick = () => decide('approved');
+$('aNo').onclick  = () => decide('rejected');
+$('aRev').onclick = openNote;
+$('mCancel').onclick = closeNote;
+$('mSave').onclick = () => {
+  const t = $('mText').value.trim();
+  if(!t){ $('mText').focus(); return; }
+  const a = $('mAct').value;
+  closeNote();
+  decide(a === 'Pass on this one' ? 'rejected' : 'commented', t, a);
+};
+$('modal').onclick = e => { if(e.target.id === 'modal') closeNote(); };
+$('backBtn').onclick = renderHome;
+$('homeBtn').onclick = renderHome;
+$('finishBtn').onclick = () => { if(items.length) renderDone(); };
+
+renderHome();
+</script>
+</body>
+</html>
